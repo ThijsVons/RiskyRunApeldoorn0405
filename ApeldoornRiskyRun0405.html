@@ -115,43 +115,19 @@
     <button id="saveMapImage">Sla spelstatus op als afbeelding</button>
 
     <script>
-        // document.getElementById('saveMapImage').addEventListener('click', function() {
-        //     // html2canvas(document.getElementById('map'), {
-        //     // html2canvas(document.getElementById('scoreboard'), {
-        //     html2canvas(document.getElementById('screenshot-container'), {
-        //         useCORS: true, // Enable Cross-Origin Resource Sharing
-        //         allowTaint: true // Allow tainting for cross-origin resources (like map tiles)
-        //     }).then(canvas => {
-        //         let link = document.createElement('a');
-        //         link.href = canvas.toDataURL("image/png");
-
-        //         // Get current date and time
-        //         let now = new Date();
-        //         let timestamp = now.getFullYear() + "-" + 
-        //                         (now.getMonth() + 1).toString().padStart(2, '0') + "-" + 
-        //                         now.getDate().toString().padStart(2, '0') + "_" + 
-        //                         now.getHours().toString().padStart(2, '0') + "." + 
-        //                         now.getMinutes().toString().padStart(2, '0') + "." + 
-        //                         now.getSeconds().toString().padStart(2, '0');
-
-        //         // Set the filename with date and time
-        //         link.download = `Gamestate_${timestamp}.png`;
-
-        //         link.click();
-        //     })
-        // });
-
+        // Function that saves images of the website to the Downloads folder
+        // Inputs name of the part to save, and prefix of the filename
         function saveMapAsImage(containerName, filenamePrefix) {
             const container = document.getElementById(containerName);
 
             html2canvas(container, {
-                useCORS: true,
-                allowTaint: true
+                useCORS: true // Ensure correct polygon placement
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.href = canvas.toDataURL("image/png");
 
-                const now = new Date();
+                const now = new Date(); // Extract current time/date
+                // Create string with current time/date
                 const timestamp = now.getFullYear() + "-" +
                                 (now.getMonth() + 1).toString().padStart(2, '0') + "-" +
                                 now.getDate().toString().padStart(2, '0') + "_" +
@@ -164,10 +140,65 @@
             });
         }
 
+        function downloadCSV(scoreHistory, areaHistory, timeHistory, scores, score_filename = "score_history.csv", area_filename = "area_history.csv") {
+            const names = Object.keys(scores);
+            const headerRow = ["Time", ...timeHistory];
+
+            const transposedScoreHistory = scoreHistory[0].map((_, colIndex) => scoreHistory.map(row => row[colIndex])) // Transpose the scores matrix
+
+            const dataScoreRows = transposedScoreHistory.map((row, i) => [names[i], ...row]);
+            const allScoreRows = [headerRow, ...dataScoreRows];
+            const csvScoresContent = allScoreRows.map(row => row.join(",")).join("\n");
+
+            const blobScore = new Blob([csvScoresContent], { type: "text/csv;charset=utf-8;" });
+            const linkScore = document.createElement("a");
+
+            linkScore.href = URL.createObjectURL(blobScore);
+            linkScore.setAttribute("download", score_filename);
+            linkScore.style.display = "none";
+
+            document.body.appendChild(linkScore);
+            linkScore.click();
+            document.body.removeChild(linkScore);
+
+            const transposedAreaHistory = areaHistory[0].map((_, colIndex) => areaHistory.map(row => row[colIndex])) // Transpose the areas matrix
+
+            const dataAreaRows = transposedAreaHistory.map((row, i) => [names[i], ...row]);
+            const allAreaRows = [headerRow, ...dataAreaRows];
+            const csvAreasContent = allAreaRows.map(row => row.join(",")).join("\n");
+
+            const blobArea = new Blob([csvAreasContent], { type: "text/csv;charset=utf-8;" });
+            const linkArea = document.createElement("a");
+
+            linkArea.href = URL.createObjectURL(blobArea);
+            linkArea.setAttribute("download", area_filename);
+            linkArea.style.display = "none";
+
+            document.body.appendChild(linkArea);
+            linkArea.click();
+            document.body.removeChild(linkArea);
+        }
+
+        function saveScoreSnapshot() {
+            scoreHistory.push([...Object.values(scores)]);
+            areaHistory.push([...Object.values(claimedAreas)])
+
+            const now = new Date();
+            timeHistory.push(now.toTimeString().slice(0, 5));
+        }
+
+        // Upon clicking the save gamestate map image active this
         document.getElementById('saveMapImage').addEventListener('click', function() {
-            saveMapAsImage('screenshot-container', 'GamestateFull');
-            saveMapAsImage('scoreboard', 'GamestateScoreboard');
-            saveMapAsImage('map', 'GamestateMap');
+            saveMapAsImage('screenshot-container', 'GamestateFull'); // Save the map and scoreboard
+            
+            toggleVisibility(areaLabelList, () => areaLabelsVisible, (val) => { areaLabelsVisible = val; }); // Toggle the area label visibility
+
+            // saveMapAsImage('scoreboard', 'GamestateScoreboard'); // Save the scoreboard
+            saveMapAsImage('map', 'GamestateMap'); // Save the map
+
+            toggleVisibility(areaLabelList, () => areaLabelsVisible, (val) => { areaLabelsVisible = val; }); // Toggle the area label visibility
+
+            downloadCSV(scoreHistory, areaHistory, timeHistory, scores);
         });
 
         // ---------------------------------------------------------------------------------------- //
@@ -266,6 +297,10 @@
 
         const oldScores = { name1: 0, name2: 0, name3: 0, name4: 0}; 
         const oldClaimedAreas = { name1: 0, name2: 0, name3: 0, name4: 0}; 
+
+        const scoreHistory = []; // To track scores
+        const areaHistory = [] // To track areas
+        const timeHistory = []; // To track timestamps
 
         // Lists to update the style of the score when hovering over an area
         const scoreElements = ['score_player_1', 'score_player_2', 'score_player_3', 'score_player_4'];
@@ -597,6 +632,8 @@
 
                         this.setStyle({ fillColor: newFillColor, fillOpacity: newFillOpacity });  // Apply the style to the area
 
+                        saveScoreSnapshot();
+
                         updateScoreboard(scores, claimedAreas, selectedPlayer, originalPlayer, styleIsTemporary=false)  // Update the scoreboard
 
                         switchScoreTracking(saveScoresAsOldScores=true, selectedPlayer, originalPlayer, scores, oldScores, claimedAreas, oldClaimedAreas)  // Update the old score to the current score
@@ -691,32 +728,33 @@
 
         loadGeoData();
 
+        // Function that handles toggling the visiblity of map elements
+        function toggleVisibility(elementsList, getVisibility, setVisibility) {
+            const newVisibility = !getVisibility(); // Toggle visibility
+            setVisibility(newVisibility);          // Update external variable
+
+            Object.keys(elementsList).forEach(areaName => { // For every area
+                const locationMarker = elementsList[areaName]; // Get the location marker
+                locationMarker.getElement().style.display = newVisibility ? '' : 'none'; // '':  Show location marker, 'none'; Hide location marker
+            });
+        }
+
         // Add functionality to points value label toggle
         let areaLabelsVisible = false;  // Variable to keep track of the visibility state of the area labels
         let pointsValueVisible = false;  // Variable to keep track of the visibility state of point value labels
         let locationsVisible = false;  // Variable to keep track of the visibility state of the location markers
 
-        // Function that handles toggle the visiblity of map elements
-        function toggleVisibility(buttonID, elementList, visiblityLabel) {
-            document.getElementById(buttonID).addEventListener("click", () => {  // Upon clicking
-                visiblityLabel = !visiblityLabel;  // Toggle location marker visiblity
+        document.getElementById("toggleAreaLabelButton").addEventListener("click", () => { 
+            toggleVisibility(areaLabelList, () => areaLabelsVisible, (val) => { areaLabelsVisible = val; });
+         })
 
-                // Show or hide the area labels based on the state
-                Object.keys(elementList).forEach(areaName => {  // For every area
-                    const locationMarkerVisible = elementList[areaName];
+        document.getElementById("togglePointsValueButton").addEventListener("click", () => { 
+            toggleVisibility(areaPointsValueList, () => pointsValueVisible, (val) => { pointsValueVisible = val; });
+        })
 
-                    if (visiblityLabel) {
-                        locationMarkerVisible.getElement().style.display = '';  // Show location marker label
-                    } else {
-                        locationMarkerVisible.getElement().style.display = 'none';  // Hide location marker label
-                    }
-                });
-            });
-        }
-
-        toggleVisibility("toggleAreaLabelButton", areaLabelList, areaLabelsVisible);  // Toggle visibility of the area number labels
-        toggleVisibility("togglePointsValueButton", areaPointsValueList, pointsValueVisible);  // Toggle visibility of the area point value labels
-        toggleVisibility("toggleLocationMarkerButton", areaLocationMarkerlist, locationsVisible);  // Toggle visibility of the location markers
+        document.getElementById("toggleLocationMarkerButton").addEventListener("click", () => { 
+            toggleVisibility(areaLocationMarkerlist, () => locationsVisible, (val) => { locationsVisible = val; });
+        })
     </script>
     
 </body>
