@@ -30,7 +30,7 @@
                 </thead>
                 <tbody> <!-- Scoreboard table content -->
                     <tr>
-                        <td><span class="player_color_square" style="background-color: red;"></span> <!-- Small yellow square before the name of player 1 --> 
+                        <td><span class="player_color_square" style="background-color: orange;"></span> <!-- Small yellow square before the name of player 1 --> 
                             Team Mitchell en Damon</td> <!-- Player 1 name -->
                         <td><span id="score_player_1">0</span></td> <!-- Score counter player 1 initialisation --> 
                         <td><span id="areas_claimed_player_1">0</span></td> <!-- Claimed areas counter player 1 initialisation --> 
@@ -64,7 +64,7 @@
         <div id="playerSelectList"> <!-- List with players to select from -->
             <label>
                 <input type="radio" name="player" value="name1" checked> <!-- Selection button initialisation. Start off being checked only for player 1 --> 
-                <div class="player_color_square" style="background-color: red;"></div> <!-- Place small yellow square before the players name --> 
+                <div class="player_color_square" style="background-color: orange;"></div> <!-- Place small yellow square before the players name --> 
                 Team Mitchell en Damon
             </label>
             <label>
@@ -115,30 +115,59 @@
     <button id="saveMapImage">Sla spelstatus op als afbeelding</button>
 
     <script>
-        document.getElementById('saveMapImage').addEventListener('click', function() {
-            // html2canvas(document.getElementById('map'), {
-            // html2canvas(document.getElementById('scoreboard'), {
-            html2canvas(document.getElementById('screenshot-container'), {
-                useCORS: true, // Enable Cross-Origin Resource Sharing
-                allowTaint: true // Allow tainting for cross-origin resources (like map tiles)
+        // document.getElementById('saveMapImage').addEventListener('click', function() {
+        //     // html2canvas(document.getElementById('map'), {
+        //     // html2canvas(document.getElementById('scoreboard'), {
+        //     html2canvas(document.getElementById('screenshot-container'), {
+        //         useCORS: true, // Enable Cross-Origin Resource Sharing
+        //         allowTaint: true // Allow tainting for cross-origin resources (like map tiles)
+        //     }).then(canvas => {
+        //         let link = document.createElement('a');
+        //         link.href = canvas.toDataURL("image/png");
+
+        //         // Get current date and time
+        //         let now = new Date();
+        //         let timestamp = now.getFullYear() + "-" + 
+        //                         (now.getMonth() + 1).toString().padStart(2, '0') + "-" + 
+        //                         now.getDate().toString().padStart(2, '0') + "_" + 
+        //                         now.getHours().toString().padStart(2, '0') + "." + 
+        //                         now.getMinutes().toString().padStart(2, '0') + "." + 
+        //                         now.getSeconds().toString().padStart(2, '0');
+
+        //         // Set the filename with date and time
+        //         link.download = `Gamestate_${timestamp}.png`;
+
+        //         link.click();
+        //     })
+        // });
+
+        function saveMapAsImage(containerName, filenamePrefix) {
+            const container = document.getElementById(containerName);
+
+            html2canvas(container, {
+                useCORS: true,
+                allowTaint: true
             }).then(canvas => {
-                let link = document.createElement('a');
+                const link = document.createElement('a');
                 link.href = canvas.toDataURL("image/png");
 
-                // Get current date and time
-                let now = new Date();
-                let timestamp = now.getFullYear() + "-" + 
-                                (now.getMonth() + 1).toString().padStart(2, '0') + "-" + 
-                                now.getDate().toString().padStart(2, '0') + "_" + 
-                                now.getHours().toString().padStart(2, '0') + "." + 
-                                now.getMinutes().toString().padStart(2, '0') + "." + 
+                const now = new Date();
+                const timestamp = now.getFullYear() + "-" +
+                                (now.getMonth() + 1).toString().padStart(2, '0') + "-" +
+                                now.getDate().toString().padStart(2, '0') + "_" +
+                                now.getHours().toString().padStart(2, '0') + "." +
+                                now.getMinutes().toString().padStart(2, '0') + "." +
                                 now.getSeconds().toString().padStart(2, '0');
 
-                // Set the filename with date and time
-                link.download = `Gamestate_${timestamp}.png`;
-
+                link.download = `${filenamePrefix}_${timestamp}.png`;
                 link.click();
-            })
+            });
+        }
+
+        document.getElementById('saveMapImage').addEventListener('click', function() {
+            saveMapAsImage('screenshot-container', 'GamestateFull');
+            saveMapAsImage('scoreboard', 'GamestateScoreboard');
+            saveMapAsImage('map', 'GamestateMap');
         });
 
         // ---------------------------------------------------------------------------------------- //
@@ -225,7 +254,7 @@
 
         // Define lists containing information on the selected player, and player names and color
         const playerSelectionList = document.querySelectorAll('#playerSelectMenu input[type="radio"]');  // Create list with with the information of all players. Extracted from playerSelectMenu
-        const playerColorList = { name1: 'yellow', name2: 'purple', name3: 'blue', name4: 'red'};  // Define object to link the players to colors 
+        const playerColorList = { name1: 'orange', name2: 'yellow', name3: 'blue', name4: 'purple'};  // Define object to link the players to colors 
 
         // Set the selected player('s color)
         let selectedPlayer = 'name1';  // Initialise player 1 as the selected player
