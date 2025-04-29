@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Correctly scale on mobile devices -->
-    <title>Apeldoorn Risky Run </title> <!-- Add title -->
+    <title>Apeldoorn Risky Run 04-05</title> <!-- Add title -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" /> <!-- Load the necessary styles for Leaflet.js -->
-    <link rel="stylesheet" href="stylesApeldoorn.css"> <!-- Load custom styles -->
+    <link rel="stylesheet" href="stylesApeldoorn0405.css"> <!-- Load custom styles -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> <!-- Load Leaflet.js (interactive mapping library) -->
     <script src="https://unpkg.com/proj4/dist/proj4.js"></script> <!-- Load Proj4.js (coordinate transformation library) -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script> <!-- Load Axios (JS library for making HTML request, like fetching data from an API) -->
@@ -30,34 +30,28 @@
                 </thead>
                 <tbody> <!-- Scoreboard table content -->
                     <tr>
-                        <td><span class="player_color_square" style="background-color: yellow;"></span> <!-- Small yellow square before the name of player 1 --> 
-                            Laure</td> <!-- Player 1 name -->
+                        <td><span class="player_color_square" style="background-color: red;"></span> <!-- Small yellow square before the name of player 1 --> 
+                            Team Mitchell en Damon</td> <!-- Player 1 name -->
                         <td><span id="score_player_1">0</span></td> <!-- Score counter player 1 initialisation --> 
                         <td><span id="areas_claimed_player_1">0</span></td> <!-- Claimed areas counter player 1 initialisation --> 
                     </tr>
                     <tr>
-                        <td><span class="player_color_square" style="background-color: green;"></span> <!-- Small green square before the name of player 2 --> 
-                            Douwe</td> <!-- Player 2 name -->
+                        <td><span class="player_color_square" style="background-color: yellow;"></span> <!-- Small green square before the name of player 2 --> 
+                            Kimpie Paarntie</td> <!-- Player 2 name -->
                         <td><span id="score_player_2">0</span></td> <!-- Score counter player 2 initialisation --> 
                         <td><span id="areas_claimed_player_2">0</span></td> <!-- Claimed areas counter player 2 initialisation --> 
                     </tr>
                     <tr>
                         <td><span class="player_color_square" style="background-color: blue;"></span> <!-- Small blue square before the name of player 3 --> 
-                            Hendal</td> <!-- Player 3 name -->
+                            Dual Damage</td> <!-- Player 3 name -->
                         <td><span id="score_player_3">0</span></td> <!-- Score counter player 3 initialisation --> 
                         <td><span id="areas_claimed_player_3">0</span></td> <!-- Claimed areas counter player 3 initialisation --> 
                     </tr>
                     <tr>
-                        <td><span class="player_color_square" style="background-color: red;"></span> <!-- Small red square before the name of player 4 --> 
-                            Vincent</td> <!-- Player 4 name -->
+                        <td><span class="player_color_square" style="background-color: purple;"></span> <!-- Small red square before the name of player 4 --> 
+                            UltrazalmloversXXL</td> <!-- Player 4 name -->
                         <td><span id="score_player_4">0</span></td> <!-- Score counter player 4 initialisation --> 
                         <td><span id="areas_claimed_player_4">0</span></td> <!-- Claimed areas counter player 4 initialisation --> 
-                    </tr>
-                    <tr>
-                        <td><span class="player_color_square" style="background-color: orange;"></span> <!-- Small orange square before the name of player 5 --> 
-                            Jelke</td> <!-- Player 5 name -->
-                        <td><span id="score_player_5">0</span></td> <!-- Score counter player 5 initialisation --> 
-                        <td><span id="areas_claimed_player_5">0</span></td> <!-- Claimed areas counter player 5 initialisation --> 
                     </tr>
                 </tbody>
             </table>
@@ -70,28 +64,23 @@
         <div id="playerSelectList"> <!-- List with players to select from -->
             <label>
                 <input type="radio" name="player" value="name1" checked> <!-- Selection button initialisation. Start off being checked only for player 1 --> 
-                <div class="player_color_square" style="background-color: yellow;"></div> <!-- Place small yellow square before the players name --> 
-                Laure
+                <div class="player_color_square" style="background-color: red;"></div> <!-- Place small yellow square before the players name --> 
+                Team Mitchell en Damon
             </label>
             <label>
                 <input type="radio" name="player" value="name2"> <!-- Selection button initialisation. Start off being unchecked --> 
-                <div class="player_color_square" style="background-color: green;"></div> <!-- Place small green square before the players name --> 
-                Douwe
+                <div class="player_color_square" style="background-color: yellow;"></div> <!-- Place small green square before the players name --> 
+                Kimpie Paarntie
             </label>
             <label>
                 <input type="radio" name="player" value="name3"> <!-- Selection button initialisation. Start off being unchecked --> 
                 <div class="player_color_square" style="background-color: blue;"></div> <!-- Place small blue square before the players name --> 
-                Hendal
+                Dual Damage
             </label>
             <label>
                 <input type="radio" name="player" value="name4"> <!-- Selection button initialisation. Start off being unchecked --> 
-                <div class="player_color_square" style="background-color: red;"></div> <!-- Place small red square before the players name --> 
-                Vincent
-            </label>
-            <label>
-                <input type="radio" name="player" value="name5"> <!-- Selection button initialisation. Start off being unchecked --> 
-                <div class="player_color_square" style="background-color: orange;"></div> <!-- Place small orange square before the players name --> 
-                Jelke
+                <div class="player_color_square" style="background-color: purple;"></div> <!-- Place small red square before the players name --> 
+                UltrazalmloversXXL
             </label>
         </div>
     </div>    
@@ -236,22 +225,22 @@
 
         // Define lists containing information on the selected player, and player names and color
         const playerSelectionList = document.querySelectorAll('#playerSelectMenu input[type="radio"]');  // Create list with with the information of all players. Extracted from playerSelectMenu
-        const playerColorList = { name1: 'yellow', name2: 'green', name3: 'blue', name4: 'red', name5: 'orange'};  // Define object to link the players to colors 
+        const playerColorList = { name1: 'yellow', name2: 'purple', name3: 'blue', name4: 'red'};  // Define object to link the players to colors 
 
         // Set the selected player('s color)
         let selectedPlayer = 'name1';  // Initialise player 1 as the selected player
         let selectedPlayerFillColor = playerColorList[selectedPlayer];  // Initialise the color of player 1 as the selected fill color
      
         // Define lists to to store the score and claimed areas
-        const scores = { name1: 0, name2: 0, name3: 0, name4: 0, name5: 0};  // Initialise the starting scores of each player at 0
-        const claimedAreas = { name1: 0, name2: 0, name3: 0, name4: 0, name5: 0};  // Initialise the claimed areas of each player at 0
+        const scores = { name1: 0, name2: 0, name3: 0, name4: 0};  // Initialise the starting scores of each player at 0
+        const claimedAreas = { name1: 0, name2: 0, name3: 0, name4: 0};  // Initialise the claimed areas of each player at 0
 
-        const oldScores = { name1: 0, name2: 0, name3: 0, name4: 0, name5: 0}; 
-        const oldClaimedAreas = { name1: 0, name2: 0, name3: 0, name4: 0, name5: 0}; 
+        const oldScores = { name1: 0, name2: 0, name3: 0, name4: 0}; 
+        const oldClaimedAreas = { name1: 0, name2: 0, name3: 0, name4: 0}; 
 
         // Lists to update the style of the score when hovering over an area
-        const scoreElements = ['score_player_1', 'score_player_2', 'score_player_3', 'score_player_4', 'score_player_5'];
-        const claimedAreasElements = ['areas_claimed_player_1', 'areas_claimed_player_2', 'areas_claimed_player_3', 'areas_claimed_player_4', 'areas_claimed_player_5'];
+        const scoreElements = ['score_player_1', 'score_player_2', 'score_player_3', 'score_player_4'];
+        const claimedAreasElements = ['areas_claimed_player_1', 'areas_claimed_player_2', 'areas_claimed_player_3', 'areas_claimed_player_4'];
 
         // Create lists to store game information
         const areaPoints = {};  // List to store the value of each area
@@ -342,7 +331,7 @@
             renderer: L.canvas(),  // Provide the tiles as canvas instead of svg. This ensures the correct position of polygons when saving the map as image
             zoomControl: false,  // Remove the default zoom button
             zoomSnap: 0.1 // Enable more precise zoomlevel
-        }).setView([52.2138, 5.962], 14.1);  // Initialises a Leaflet map using OpenStreetMap
+        }).setView([52.215, 5.951], 14.1);  // Initialises a Leaflet map using OpenStreetMap
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { // Create placeholders that Leaflet replaces with the appropriate zoom level
             attribution: '&copy; OpenStreetMap contributors',    // Display credit to OpenStreetMap contributors

@@ -125,8 +125,8 @@ Scoreboard Menu Styles
 /* Scoreboard overall style */
 #scoreboard {
     top: 20px;
+    width: 400px;
     left: 20px;
-    width: 290px;
 }
 
 /* Scoreboard table style */
@@ -177,7 +177,7 @@ Player Select Menu Styles
 
 /* Player select menu position */
 #playerSelectMenu {
-    top: 290px;
+    top: 255px;
     left: 20px;
 }
 
@@ -203,6 +203,7 @@ Player Select Menu Styles
     display: flex;
     padding: 3px;
     align-items: bottom;
+    cursor: pointer;
 }
 
 /* Player select checkbox */
@@ -210,6 +211,7 @@ input[type="radio"] {
     margin-right: 10px;
     position: relative;
     top: -3px;
+    cursor: pointer;
 }
 
 /* ------------------------------
