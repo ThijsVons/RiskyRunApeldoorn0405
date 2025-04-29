@@ -114,6 +114,9 @@
     <!-- Button to save the map as an image -->
     <button id="saveMapImage">Sla spelstatus op als afbeelding</button>
 
+    <!-- Button to save scores and areas claimed as csv -->
+    <button id="saveScoresAndAreasClaimed">Sla scores en gebieden op als CSV</button>
+
     <script>
         // Function that saves images of the website to the Downloads folder
         // Inputs name of the part to save, and prefix of the filename
@@ -142,9 +145,10 @@
 
         function downloadCSV(scoreHistory, areaHistory, timeHistory, scores, score_filename = "score_history.csv", area_filename = "area_history.csv") {
             const names = Object.keys(scores);
-            const headerRow = ["Time", ...timeHistory];
+            const headerRow = ["Time", "12:15", ...timeHistory];
 
-            const transposedScoreHistory = scoreHistory[0].map((_, colIndex) => scoreHistory.map(row => row[colIndex])) // Transpose the scores matrix
+            const transposedScoreHistoryIncomplete = scoreHistory[0].map((_, colIndex) => scoreHistory.map(row => row[colIndex])) // Transpose the scores matrix
+            const transposedScoreHistory = transposedScoreHistoryIncomplete.map(row => [0, ...row]);
 
             const dataScoreRows = transposedScoreHistory.map((row, i) => [names[i], ...row]);
             const allScoreRows = [headerRow, ...dataScoreRows];
@@ -161,7 +165,8 @@
             linkScore.click();
             document.body.removeChild(linkScore);
 
-            const transposedAreaHistory = areaHistory[0].map((_, colIndex) => areaHistory.map(row => row[colIndex])) // Transpose the areas matrix
+            const transposedAreaHistoryIncomplete = areaHistory[0].map((_, colIndex) => areaHistory.map(row => row[colIndex])) // Transpose the areas matrix
+            const transposedAreaHistory = transposedAreaHistoryIncomplete.map(row => [0, ...row]);
 
             const dataAreaRows = transposedAreaHistory.map((row, i) => [names[i], ...row]);
             const allAreaRows = [headerRow, ...dataAreaRows];
@@ -197,7 +202,10 @@
             saveMapAsImage('map', 'GamestateMap'); // Save the map
 
             toggleVisibility(areaLabelList, () => areaLabelsVisible, (val) => { areaLabelsVisible = val; }); // Toggle the area label visibility
+        });
 
+        // Upon clicking the save gamestate map image active this
+        document.getElementById('saveScoresAndAreasClaimed').addEventListener('click', function() {
             downloadCSV(scoreHistory, areaHistory, timeHistory, scores);
         });
 

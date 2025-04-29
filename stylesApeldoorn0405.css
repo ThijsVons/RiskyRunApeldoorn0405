@@ -22,7 +22,7 @@ Toggle Buttons (Website controls and area label visibility toggles)
 ------------------------------ */
 
 /* Toggle buttons overall */
-#websiteControls, #toggleAreaLabel, #togglePointsValue, #toggleLocationMarker, #saveMapImage {
+#websiteControls, #toggleAreaLabel, #togglePointsValue, #toggleLocationMarker, #saveMapImage, #saveScoresAndAreasClaimed {
     position: absolute;
     bottom: 25px;
     left: 20px;
@@ -62,12 +62,22 @@ Toggle Buttons (Website controls and area label visibility toggles)
     cursor: pointer;
 }
 
+/* Location marker checkbox position */
+#saveScoresAndAreasClaimed {
+    bottom: 175px;
+    padding: 12px 7px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
 /* Toggle buttons text */
 #websiteControls label, 
 #toggleAreaLabel label, 
 #togglePointsValue label, 
 #toggleLocationMarker label, 
-#saveMapImage label{
+#saveMapImage label,
+#saveScoresAndAreasClaimed label {
     display: flex;
     align-items: center;
     font-size: 10px;
