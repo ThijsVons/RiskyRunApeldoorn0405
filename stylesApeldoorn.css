@@ -1,0 +1,289 @@
+/* ------------------------------
+General Styles
+------------------------------ */
+* {
+    user-select: none;
+}
+
+/* Base text style */
+p {
+    margin: 3px;
+}
+
+/* Header style */
+h3, h4 {
+    margin: 3px;
+    /* cursor: pointer; */
+    font-size: 16px;
+}
+
+/* ------------------------------
+Toggle Buttons (Website controls and area label visibility toggles)
+------------------------------ */
+
+/* Toggle buttons overall */
+#websiteControls, #toggleAreaLabel, #togglePointsValue, #toggleLocationMarker, #saveMapImage {
+    position: absolute;
+    bottom: 25px;
+    left: 20px;
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+    z-index: 1001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15px;
+}
+
+/* Area label checkbox position */
+#toggleAreaLabel {
+    bottom: 55px;
+}
+
+/* Points value label checkbox position */
+#togglePointsValue {
+    bottom: 85px;
+}
+
+/* Location marker checkbox position */
+#toggleLocationMarker {
+    bottom: 115px;
+}
+
+/* Location marker checkbox position */
+#saveMapImage {
+    bottom: 145px;
+    padding: 12px 7px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+/* Toggle buttons text */
+#websiteControls label, 
+#toggleAreaLabel label, 
+#togglePointsValue label, 
+#toggleLocationMarker label, 
+#saveMapImage label{
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    cursor: pointer;
+    margin-left: -3px;
+}
+
+/* Checkbox style */
+#websiteControls input[type="checkbox"], 
+#toggleAreaLabel input[type="checkbox"], 
+#togglePointsValue input[type="checkbox"], 
+#toggleLocationMarker input[type="checkbox"]  {
+    margin-right: 4px;
+}
+
+/* ------------------------------
+Map Styling
+------------------------------ */
+
+/* Make the map take the full height of the viewport */
+#map { 
+    height: 97vh;
+}
+
+/* ------------------------------
+Foldable Menus - General
+------------------------------ */
+
+/* Menus general style */
+#scoreboard, #playerSelectMenu, #areaValueMenu {
+    position: absolute;
+    z-index: 1000;
+    background: white;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+}
+
+/* ------------------------------
+Scoreboard Menu Styles
+------------------------------ */
+
+/* Player color square */
+.player_color_square {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 8px;
+    border-radius: 3px;
+    position: relative;
+    top: -1px;
+}
+
+/* Scoreboard overall style */
+#scoreboard {
+    top: 20px;
+    left: 20px;
+    width: 290px;
+}
+
+/* Scoreboard table style */
+#scoreboard table {
+    width: 100%;
+    border-spacing: 0 0px; /* Remove any space around the table rows*/
+}
+
+#scoreboard h3 {
+    font-size: 22px;
+}
+
+/* Scoreboard table headers and row content*/
+#scoreboard th, #scoreboard td {
+    padding: 5px;
+    text-align: left;
+    vertical-align: top; /* Align all elements of a row */
+    line-height: 25px;  /* Set the height of a row */
+    border-bottom: 1px solid #ddd; /* Small line dividing the players */
+    font-size: 18px;
+}
+
+/* Scoreboard table information*/
+#scoreboard td {
+    font-size: 16px;
+}
+
+/* Scoreboard content */
+#scoreboard td span {
+    font-weight: bold;
+    color: black;
+    vertical-align: middle;
+}
+
+/* Scoreboard style even rows */
+#scoreboard tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Alternate row colors for readability */
+}
+
+/* Scoreboard hover style */
+#scoreboard tbody tr:hover {
+    background-color: #f1f1f1; /* Hover effect for rows */
+}
+
+/* ------------------------------
+Player Select Menu Styles
+------------------------------ */
+
+/* Player select menu position */
+#playerSelectMenu {
+    top: 290px;
+    left: 20px;
+}
+
+#playerSelectHeader {
+    cursor: pointer;
+}
+
+/* Player select menu folded in */
+#playerSelectList {
+    font-size: 12px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-in-out;
+}
+
+/* Player select menu folded out */
+#playerSelectList.show{
+    max-height: 400px;
+}
+
+/* Player select names */
+#playerSelectList label {
+    display: flex;
+    padding: 3px;
+    align-items: bottom;
+}
+
+/* Player select checkbox */
+input[type="radio"] {
+    margin-right: 10px;
+    position: relative;
+    top: -3px;
+}
+
+/* ------------------------------
+Area Points Value Selection Menu Styles
+------------------------------ */
+
+/* Area points value selection menu position */
+#areaValueMenu {
+    top: 20px;
+    right: 20px;
+    /* width: 200px; */
+}
+
+#areaNamesListHeader {
+    cursor: pointer;
+}
+
+/* Area points value selection folded in */
+#areaNamesListStyle {
+    display: block;
+    list-style-type: none;
+    padding-left: 3px;
+    margin: 0;
+    font-size: 12px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+/* Area points value selection menu folded out */
+#areaNamesListStyle.show {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+/* Area points value selection individual names */
+#areaNamesListStyle li {
+    text-align: left;
+    padding: 3px 0;
+    cursor: default;
+}
+
+/* Dropdown element */
+.point-selector {
+    margin-right: 10px;
+}
+
+/* ------------------------------
+Area Labels
+------------------------------ */
+
+/* Area points labels */
+.area_points_label {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 5px;
+    font-size: 10px;
+    padding: 2px 5px;
+    text-align: center;
+}
+
+/* Area number labels */
+.area_number_label span {
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+    background-color: white;
+    padding: 0px;
+    border-radius: 5px;
+    text-align: center;
+    display: block;
+    width: 30px;
+    height: 20px;
+    line-height: 20px;
+    transform: translateX(50%) translateY(-50%);
+    pointer-events: none;
+}

@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Correctly scale on mobile devices -->
+    <title>Apeldoorn Risk/Tag Game</title> <!-- Add title -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" /> <!-- Load the necessary styles for Leaflet.js -->
+    <link rel="stylesheet" href="stylesApeldoorn.css"> <!-- Load custom styles -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> <!-- Load Leaflet.js (interactive mapping library) -->
+    <script src="https://unpkg.com/proj4/dist/proj4.js"></script> <!-- Load Proj4.js (coordinate transformation library) -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script> <!-- Load Axios (JS library for making HTML request, like fetching data from an API) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> <!-- Load HTML2 canvas, to save the site as an image -->
+
+</head>
+<body>
+    <div id="screenshot-container">
+        <!-- Background map -->  
+        <div id="map"></div>
+
+        <!-- Scoreboard menu -->
+        <div id="scoreboard">
+            <h3>Scorebord</h3> <!-- Scoreboard menu header -->
+            <table> <!-- Table containing the players in the game, their points and the number of areas they claimed -->
+                <thead> <!-- Scoreboard table header -->
+                    <tr>
+                        <th><strong>Speler</strong></th> <!-- Players header -->
+                        <th><strong>Punten</strong></th> <!-- Points header -->
+                        <th><strong>Gebieden</strong></th> <!-- Claimed areas header -->
+                    </tr>
+                </thead>
+                <tbody> <!-- Scoreboard table content -->
+                    <tr>
+                        <td><span class="player_color_square" style="background-color: yellow;"></span> <!-- Small yellow square before the name of player 1 --> 
+                            Laure</td> <!-- Player 1 name -->
+                        <td><span id="score_player_1">0</span></td> <!-- Score counter player 1 initialisation --> 
+                        <td><span id="areas_claimed_player_1">0</span></td> <!-- Claimed areas counter player 1 initialisation --> 
+                    </tr>
+                    <tr>
+                        <td><span class="player_color_square" style="background-color: green;"></span> <!-- Small green square before the name of player 2 --> 
+                            Douwe</td> <!-- Player 2 name -->
+                        <td><span id="score_player_2">0</span></td> <!-- Score counter player 2 initialisation --> 
+                        <td><span id="areas_claimed_player_2">0</span></td> <!-- Claimed areas counter player 2 initialisation --> 
+                    </tr>
+                    <tr>
+                        <td><span class="player_color_square" style="background-color: blue;"></span> <!-- Small blue square before the name of player 3 --> 
+                            Hendal</td> <!-- Player 3 name -->
+                        <td><span id="score_player_3">0</span></td> <!-- Score counter player 3 initialisation --> 
+                        <td><span id="areas_claimed_player_3">0</span></td> <!-- Claimed areas counter player 3 initialisation --> 
+                    </tr>
+                    <tr>
+                        <td><span class="player_color_square" style="background-color: red;"></span> <!-- Small red square before the name of player 4 --> 
+                            Vincent</td> <!-- Player 4 name -->
+                        <td><span id="score_player_4">0</span></td> <!-- Score counter player 4 initialisation --> 
+                        <td><span id="areas_claimed_player_4">0</span></td> <!-- Claimed areas counter player 4 initialisation --> 
+                    </tr>
+                    <tr>
+                        <td><span class="player_color_square" style="background-color: orange;"></span> <!-- Small orange square before the name of player 5 --> 
+                            Jelke</td> <!-- Player 5 name -->
+                        <td><span id="score_player_5">0</span></td> <!-- Score counter player 5 initialisation --> 
+                        <td><span id="areas_claimed_player_5">0</span></td> <!-- Claimed areas counter player 5 initialisation --> 
+                    </tr>
+                </tbody>
+            </table>
+        </div>    
+    </div>
+
+    <!-- Player select menu -->
+    <div id="playerSelectMenu">
+        <h3 id="playerSelectHeader">Selecteer een speler<span id="togglePlayerSelectButton"></span></h3> <!-- Player select menu header -->
+        <div id="playerSelectList"> <!-- List with players to select from -->
+            <label>
+                <input type="radio" name="player" value="name1" checked> <!-- Selection button initialisation. Start off being checked only for player 1 --> 
+                <div class="player_color_square" style="background-color: yellow;"></div> <!-- Place small yellow square before the players name --> 
+                Laure
+            </label>
+            <label>
+                <input type="radio" name="player" value="name2"> <!-- Selection button initialisation. Start off being unchecked --> 
+                <div class="player_color_square" style="background-color: green;"></div> <!-- Place small green square before the players name --> 
+                Douwe
+            </label>
+            <label>
+                <input type="radio" name="player" value="name3"> <!-- Selection button initialisation. Start off being unchecked --> 
+                <div class="player_color_square" style="background-color: blue;"></div> <!-- Place small blue square before the players name --> 
+                Hendal
+            </label>
+            <label>
+                <input type="radio" name="player" value="name4"> <!-- Selection button initialisation. Start off being unchecked --> 
+                <div class="player_color_square" style="background-color: red;"></div> <!-- Place small red square before the players name --> 
+                Vincent
+            </label>
+            <label>
+                <input type="radio" name="player" value="name5"> <!-- Selection button initialisation. Start off being unchecked --> 
+                <div class="player_color_square" style="background-color: orange;"></div> <!-- Place small orange square before the players name --> 
+                Jelke
+            </label>
+        </div>
+    </div>    
+
+    <!-- Toggle area points value selection menu -->    
+    <div id="areaValueMenu">
+        <h4 id="areaNamesListHeader">Puntenwaarde gebieden (#)<span id="toggleValueButton"></span></h4>
+        <ul id="areaNamesListStyle"></ul>
+    </div>
+    
+    <!-- Toggle location marker visibilty menu -->   
+    <div id="toggleLocationMarker">
+        <label><input type="checkbox" id="toggleLocationMarkerButton">Laat challenge locatie markers zien</label> <!-- Checkbox to togle the location marker of challenges -->    
+    </div>
+
+    <!-- Toggle area points values visibilty menu -->   
+    <div id="togglePointsValue">
+        <label><input type="checkbox" id="togglePointsValueButton">Laat punten waarde labels zien</label> <!-- Checkbox to toggle the points value of areas -->    
+    </div>
+    
+    <!-- Toggle area number label visibilty menu -->   
+    <div id="toggleAreaLabel">
+        <label><input type="checkbox" id="toggleAreaLabelButton">Laat gebied nummer labels zien</label> <!-- Checkbox to toggle the points value of areas -->    
+    </div>
+
+    <!-- Toggle website controls menu -->    
+    <div id="websiteControls">
+        <label><input type="checkbox" id="disablewebsiteControls" checked>Zet website beweging uit</label>
+    </div>
+
+    <!-- Button to save the map as an image -->
+    <button id="saveMapImage">Sla spelstatus op als afbeelding</button>
+
+    <script>
+        document.getElementById('saveMapImage').addEventListener('click', function() {
+            // html2canvas(document.getElementById('map'), {
+            // html2canvas(document.getElementById('scoreboard'), {
+            html2canvas(document.getElementById('screenshot-container'), {
+                useCORS: true, // Enable Cross-Origin Resource Sharing
+                allowTaint: true // Allow tainting for cross-origin resources (like map tiles)
+            }).then(canvas => {
+                let link = document.createElement('a');
+                link.href = canvas.toDataURL("image/png");
+
+                // Get current date and time
+                let now = new Date();
+                let timestamp = now.getFullYear() + "-" + 
+                                (now.getMonth() + 1).toString().padStart(2, '0') + "-" + 
+                                now.getDate().toString().padStart(2, '0') + "_" + 
+                                now.getHours().toString().padStart(2, '0') + "." + 
+                                now.getMinutes().toString().padStart(2, '0') + "." + 
+                                now.getSeconds().toString().padStart(2, '0');
+
+                // Set the filename with date and time
+                link.download = `Gamestate_${timestamp}.png`;
+
+                link.click();
+            })
+        });
+
+        // ---------------------------------------------------------------------------------------- //
+        // Functions to block website movement or reloading the website with a hotkey
+        // ---------------------------------------------------------------------------------------- //   
+
+        // Function to prevent the user reloading using Ctrl + R or F5, since the state of the game is not saved currently
+        // Currently pressing Ctrl + R or F5 twice still enables the user to reload. Reloading is still possible using Ctrl + Shift + R
+        function preventReload(event) {
+            if ((event.key === 'F5') || (event.ctrlKey && event.key === 'r')) {
+                event.preventDefault();  // Prevent reload
+                alert("Page reload blocked. You can still reload with Ctrl + Shift + R.");
+            }
+        }
+
+        // Function that activates upon loading the page. Ensures the websiteControls checkbox is checked
+        window.onload = function() {
+            const disableWebsiteControlsCheckbox = document.getElementById("disablewebsiteControls");
+
+            disableWebsiteControlsCheckbox.checked = true;  // Ensure checkbox is checked by default
+            disableWebsiteControls();  // Manually disable website movement on page load
+            disableWebsiteControlsCheckbox.addEventListener("change", disableWebsiteControls);  // Add event listener to toggle movement based on checkbox state
+        };
+
+        // Function to enable or disable website movement
+        function disableWebsiteControls() {
+            const disableWebsiteControlsCheckbox = document.getElementById("disablewebsiteControls");
+
+            // Disable the user interacting with the website (excluding game features)
+            if (disableWebsiteControlsCheckbox.checked) {
+                // Disable the user moving around the game map (while keeping game functionality)
+                map.dragging.disable();
+                map.doubleClickZoom.disable();
+                map.scrollWheelZoom.disable();
+                map.touchZoom.disable();  // Disable phone movement
+
+                // Disable the user zooming and scrolling the website
+                document.body.style.overflow = 'hidden';  // Disable scrolling on the page
+                window.addEventListener('wheel', preventPageZoomAndScroll, { passive: false });  // Disable scrolling and zooming
+                window.addEventListener('keydown', preventPageZoomAndScroll, { passive: false });  // Disable any keyboard shortcuts (not only zooming and scrolling)
+                window.addEventListener('touchstart', preventPageZoomAndScroll, { passive: false });  // Disable mobile website movement
+            } 
+            
+            // Enable the user interacting with the website
+            else {
+                // Enable the user moving around the game map
+                map.dragging.enable();
+                map.doubleClickZoom.enable();
+                map.scrollWheelZoom.enable();
+                map.touchZoom.enable();  // Enable phone movement
+
+                // Enable the user zooming and scrolling the website
+                document.body.style.overflow = '';  // Enable scrolling on the page
+                window.removeEventListener('wheel', preventPageZoomAndScroll);  // Enable scrolling and zooming
+                window.removeEventListener('touchstart', preventPageZoomAndScroll);  // Enable any keyboard shortcuts (not only zooming and scrolling)
+                window.removeEventListener('keydown', preventPageZoomAndScroll);  // Enable mobile website movement
+            }
+        }
+
+        // Function to prevent zooming and scrolling on the page
+        function preventPageZoomAndScroll(event) {
+            event.preventDefault();
+        }
+
+        // ---------------------------------------------------------------------------------------- //
+        // Functionality to fold in and out the menus and enable toggling of points value labels
+        // ---------------------------------------------------------------------------------------- //
+
+        // Player selection menu toggle
+        document.querySelector("#playerSelectMenu h3").addEventListener("click", () => {  // Upon clicking
+            const playerSelectList = document.getElementById("playerSelectList");  // Define the list of all players to select
+            playerSelectList.classList.toggle('show');  // Show the list
+        });
+
+        // Area points value selection menu toggle
+        document.querySelector("#areaValueMenu h4").addEventListener("click", () => {  // Upon clicking
+            const areaNames = document.getElementById("areaNamesListStyle");  // Define the list of all area names
+            areaNames.classList.toggle('show');  // Show the list
+        });
+
+        // ---------------------------------------------------------------------------------------- //
+        // Define constants and lists
+        // ---------------------------------------------------------------------------------------- //
+
+        // Define lists containing information on the selected player, and player names and color
+        const playerSelectionList = document.querySelectorAll('#playerSelectMenu input[type="radio"]');  // Create list with with the information of all players. Extracted from playerSelectMenu
+        const playerColorList = { name1: 'yellow', name2: 'green', name3: 'blue', name4: 'red', name5: 'orange'};  // Define object to link the players to colors 
+
+        // Set the selected player('s color)
+        let selectedPlayer = 'name1';  // Initialise player 1 as the selected player
+        let selectedPlayerFillColor = playerColorList[selectedPlayer];  // Initialise the color of player 1 as the selected fill color
+     
+        // Define lists to to store the score and claimed areas
+        const scores = { name1: 0, name2: 0, name3: 0, name4: 0, name5: 0};  // Initialise the starting scores of each player at 0
+        const claimedAreas = { name1: 0, name2: 0, name3: 0, name4: 0, name5: 0};  // Initialise the claimed areas of each player at 0
+
+        const oldScores = { name1: 0, name2: 0, name3: 0, name4: 0, name5: 0}; 
+        const oldClaimedAreas = { name1: 0, name2: 0, name3: 0, name4: 0, name5: 0}; 
+
+        // Lists to update the style of the score when hovering over an area
+        const scoreElements = ['score_player_1', 'score_player_2', 'score_player_3', 'score_player_4', 'score_player_5'];
+        const claimedAreasElements = ['areas_claimed_player_1', 'areas_claimed_player_2', 'areas_claimed_player_3', 'areas_claimed_player_4', 'areas_claimed_player_5'];
+
+        // Create lists to store game information
+        const areaPoints = {};  // List to store the value of each area
+        const areaPointsPrevious = {};  // List to store the previous value of each area
+        const areaPointsValueList = {};  // List to store the area point value marker
+        const areaLabelList = {};  // List to store the area label number
+        const areaLocationMarkerlist = {};  // List to store the areas location marker
+        
+        // Set constants for area style
+        const opacityNotClaimed = 0.5;  // Define opacity of areas which are not claimed
+        const opacityClaimed = 0.8;  // Define opacity of areas which are claimed
+        const opacityHovering = 0.2;  // Define opacity of areas when hovering over
+        const fillColorNotClaimed = 'lightgrey';  // Define fill color of areas which are not claimed
+
+        const startingPoints = 4;  // Define the value of each area at the start of the game
+
+        // Define icon anchors for the area label and points value labels
+        const defaultAreaLabelAnchor = [60, -60] // Default area label iconAnchor
+        const defaultAreaLabelIconSize = [20, 20]  // Default icon size for points value label
+        const defaultPointsValueIconAnchor = [15, -10]; // Default points value iconAnchor
+        const defaultPointsValueIconSize = [12, 15]  // Default icon size for points value label
+
+        //  Define points value icon size and icon anchor for special cases
+        const changeInIconAnchor = 10  // The number with which the icon anchor is modified
+        const changeInIconsSize = 18  // The number with which the icon size is modified
+        const changedPointsValueIconAnchor = [[defaultPointsValueIconAnchor[0] + changeInIconAnchor], defaultPointsValueIconAnchor[1]]  // Icon Anchor if previous points is different from points (2 number in the label). Moved 8 to the left to center
+        const changedPointsValueIconSize = [[defaultPointsValueIconSize[0] + changeInIconsSize], defaultPointsValueIconSize[1]]  // Icon size if previous points is different from points (2 numbers in the label)
+
+        // Define a function to update the scores and claimed areas of each player
+        const updateScoreboard = (scores, claimedAreas, selectedPlayer, originalPlayer, styleIsTemporary, oldScoreSelectedPlayer=0, oldScoreOriginalPlayer=0, oldAreasClaimedSelectedPlayer=0, oldAreasClaimedOriginalPlayer=0) => {
+            // The new Score of both players (assuming the user is hovering over the area)
+            newScoreSelectedPlayer = scores[selectedPlayer]
+            newScoreOriginalPlayer = scores[originalPlayer]
+
+            // The Score change of both players (assuming the user is hovering over the area). If the player gains points '+{scoreGained}'. If the player loses points '-{scoreGained}'
+            scoreChangeSelectedPlayer = (newScoreSelectedPlayer > oldScoreSelectedPlayer) ? `+${newScoreSelectedPlayer - oldScoreSelectedPlayer}` : `${newScoreSelectedPlayer - oldScoreSelectedPlayer}`;
+            scoreChangeOriginalPlayer = (newScoreOriginalPlayer > oldScoreOriginalPlayer) ? `+${newScoreOriginalPlayer - oldScoreOriginalPlayer}` : `${newScoreOriginalPlayer - oldScoreOriginalPlayer}`;
+
+            // The change in areas claimed of both players (assuming the user is hovering over the area). If player loses points '+1'. If player loses points '-1'
+            areasClaimedChangeSelectedPlayer = (newScoreSelectedPlayer > oldScoreSelectedPlayer) ? '+1' : '-1'
+            areasClaimedChangeOriginalPlayer = (newScoreOriginalPlayer > oldScoreOriginalPlayer) ? '+1' : '-1'
+
+            // Loop through all scores
+            scoreElements.forEach((id, index) => {
+                // Extract the score
+                const scoreElement = document.getElementById(id);
+
+                // Define the iterated player for this iteration
+                playerIteration = `name${index + 1}`
+
+                const scoreText = scores[playerIteration];  // Extract the score of the iterated player
+                const scoreChangeText = (playerIteration === selectedPlayer) ? scoreChangeSelectedPlayer : scoreChangeOriginalPlayer;  // Define the score change of the player depending on beging the selected or original player
+                const oldScoreText = (playerIteration === selectedPlayer) ? oldScoreSelectedPlayer : oldScoreOriginalPlayer;  // Define the old score change of the player depending on beging the selected or original player
+
+                scoreElement.innerHTML = ((playerIteration === selectedPlayer || playerIteration === originalPlayer) && styleIsTemporary) ? 
+                                        `<span style="line-height: 1; vertical-align: 0px;">${oldScoreText}</span> (${scoreChangeText})` : scoreText;  // If styleIsTemporary and player is selected or original player -> text = 'old score (score change). Otherwise text -> score
+                scoreElement.style.color = (playerIteration === selectedPlayer || playerIteration === originalPlayer) ? (styleIsTemporary ? 'grey' : 'black') : 'black';  // If styleIsTemporary and player is selected or original player -> text color is grey. Otherwise text color is black
+            });
+
+            claimedAreasElements.forEach((id, index) => {
+                // Extract the areas claimed
+                const claimedElement = document.getElementById(id);
+
+                // Define the iterated player for this iteration
+                playerIteration = `name${index + 1}`
+
+                const claimedAreasText = claimedAreas[playerIteration];  // Extract the areas claimed of the iterated player
+                const claimedAreasChangeText = (playerIteration === selectedPlayer) ? areasClaimedChangeSelectedPlayer : areasClaimedChangeOriginalPlayer;  // Define the areas claimed change of the player depending on beging the selected or original player
+                const oldClaimedAreasText = (playerIteration === selectedPlayer) ? oldAreasClaimedSelectedPlayer : oldAreasClaimedOriginalPlayer;  // Define the old areas claimed change of the player depending on beging the selected or original player
+
+                claimedElement.innerHTML = ((playerIteration === selectedPlayer || playerIteration === originalPlayer) && styleIsTemporary) ? 
+                                          `<span style="line-height: 1; vertical-align: 0px">${oldClaimedAreasText}</span> (${claimedAreasChangeText})` : claimedAreasText;  // If styleIsTemporary and player is selected or original player -> text = 'old areas claimed (areas claimed change). Otherwise text -> score
+
+                claimedElement.style.color = (playerIteration === selectedPlayer || playerIteration === originalPlayer) ? (styleIsTemporary ? 'grey' : 'black') : 'black';  // If styleIsTemporary and player is selected or original player -> text color is grey. Otherwise text color is black
+            });
+        };
+
+        // Add functionality to every button in the player selection menu to change the selected player
+        playerSelectionList.forEach(radioSelectedPlayer => {
+            radioSelectedPlayer.addEventListener('change', (e) => { // 'change' fires when the user selects a different button (to select a different player)
+                selectedPlayer = e.target.value;  // SselectedPlayer is updated to the value of the selected button
+                selectedPlayerFillColor = playerColorList[selectedPlayer];  // selectedPlayerFillColor is updated to the fill color value based on the playerColorList list
+            });
+        });   
+
+        // Create background map
+        var map = L.map('map', {
+            renderer: L.canvas(),  // Provide the tiles as canvas instead of svg. This ensures the correct position of polygons when saving the map as image
+            zoomControl: false,  // Remove the default zoom button
+            zoomSnap: 0.1 // Enable more precise zoomlevel
+        }).setView([52.2138, 5.962], 14.1);  // Initialises a Leaflet map using OpenStreetMap
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { // Create placeholders that Leaflet replaces with the appropriate zoom level
+            attribution: '&copy; OpenStreetMap contributors',    // Display credit to OpenStreetMap contributors
+            crossOrigin: 'anonymous'  // Enable cross-origin for tile fetching
+        }).addTo(map);  // Add the tile layers to the map
+
+        // L.control.zoom({position: 'bottomright'}).addTo(map);  // Add a zoom button at the bottom right
+
+        // ---------------------------------------------------------------------------------------- //
+        // Function that loads the polygons with all corresponding information like labels and points values
+        // ---------------------------------------------------------------------------------------- //
+        async function loadGeoData() {
+            try {
+                const areasResponse = await axios.get('ApeldoornGebieden.json');  // Make an HTTP request to fetch the areas polygon information
+                const areasData = areasResponse.data.features;  // Extract the features from the JSON response
+
+                const areaNamesList = document.getElementById('areaNamesListStyle');  // Initialise list with all names of the areas
+
+                areasData.forEach(area => { // For every area in const areasData
+                    const areaName = area.attributes.gebiednaam;  // Initialise the name of the area
+                    const areaLabel = area.attributes.gebiednummer;  // Initialise the label of the area
+                    const challengeLocationX = area.attributes.ChallengeLocatieX  // Initialise the challenge location X
+                    const challengeLocationY = area.attributes.ChallengeLocatieY  // Initialise the challenge location Y
+
+                    // Convert CRS
+                    proj4.defs("EPSG:28992", "+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs");  // Define RD New coordinate system
+
+                    const areaCoordinates = area.geometry.rings || area.geometry.coordinates;  // Extract area polygon geometry
+                    const transformedCoords = areaCoordinates[0].map(coord => proj4("EPSG:28992", "EPSG:4326", [coord[0] - 35, coord[1] - 113]).reverse());  // Transform CRS from RD NEW to WGS84
+                    // const transformedCoords = areaCoordinates[0].map(coord => proj4("EPSG:28992", "EPSG:4326", [coord[0] - 1000, coord[1] - 1000]).reverse());  // Transform CRS from RD NEW to WGS84
+
+                    const latlng = L.latLng(challengeLocationY, challengeLocationX);
+                    const areaLocationMarker = L.marker(latlng, {
+                        icon: L.icon({
+                            iconUrl: 'LocationPin.png', // Replace with your actual icon path
+                            iconSize: [25, 41], // Adjust as needed
+                            iconAnchor: [12, 41], // Adjust as needed
+                            popupAnchor: [1, -34], // Adjust as needed
+                            shadowUrl: null // This removes the default shadow
+                        })
+                    }).addTo(map);
+                    areaLocationMarkerlist[areaName] = areaLocationMarker;
+
+                    // -------------------------------------------- //
+                    // Area points value selection menu functionality
+                    // -------------------------------------------- //
+                    areaPoints[areaName] = startingPoints;  // Initialise the starting points of the area
+                    const listItem = document.createElement('li');  // Initialise list element with a points value dropdown and the name of an area, in the area points value selection menu
+                    
+                    // Add a dropdown menu for the user to select the points value of an area
+                    const dropdown = document.createElement('select');  // Create a 'select' dropdown
+                    dropdown.classList.add('point-selector');  // Add the CSS style
+
+                    // For loop that populates the dropdown element
+                    for (let i = 1; i <= startingPoints; i++) {
+                        const option = document.createElement('option');  // Create element which contains the point value of an area
+                        option.value = i;  // Add the value
+                        option.textContent = i;  // Display the value as text
+                        if (i === startingPoints) option.selected = true;  // If the value equals the starting points
+                            dropdown.appendChild(option);  // Select it as the starting value to display
+                    }
+
+                    // Add the dropdown to the list element
+                    listItem.appendChild(dropdown);
+
+                    // Add an event listener to the dropdown to change the value of areaPoints when the user selects a value from the dropdown
+                    dropdown.addEventListener('change', () => {
+                        areaPoints[areaName] = parseInt(dropdown.value);  // Update areaPoints with the dropdown value
+                        updatePointsValueLabel(areaPoints, areaPointsPrevious, areaName, true);  // Call the updatePointsValueLabel function to update the label
+                    });
+                    areaNamesList.appendChild(listItem);  // Add the list element to the full list
+
+                    // Add the name of the area
+                    const areaNameText = document.createElement('span');  // Create a span element to store the name of the area
+                    areaNameText.textContent = `${areaName} (${areaLabel})`;  // Add the name
+                    listItem.appendChild(areaNameText);  // Add the text to the list element
+                    
+                    // Initialise the settings of the area
+                    const areaPolygon = L.polygon(transformedCoords, {
+                        color: 'black',  // Border color
+                        weight: 1,  // Thickness of the border
+                        fillColor: fillColorNotClaimed,  // Fill color of the area
+                        fillOpacity: opacityNotClaimed // Fill opacity of the area
+                    }).addTo(map);
+
+                    // -------------------------------------------- //
+                    // Adding the area label to the area
+                    // -------------------------------------------- //
+
+                    // Define custom iconAnchors for area labels which are not correctly place by the default iconAnchor
+                    const customAreaLabelAnchorList = {
+                        2: [60, -30],
+                        3: [60, -25],
+                        4: [100, -50],
+                        8: [90, -60],
+                        9: [60, -40],
+                        11: [130, -25],
+                        12: [70, -50],
+                        13: [80, -30],
+                        14: [95, -30],
+                        17: [60, -50],
+                        18: [80, -30],
+                        20: [60, -30]
+                    };
+
+                    // Set areaLabelAnchor to the defaultAreaLabelAnchor unless it is in customAreaLabelAnchorList
+                    let areaLabelAnchor = customAreaLabelAnchorList[areaLabel] || defaultAreaLabelAnchor;
+                    // let areaLabelAnchor = defaultAreaLabelAnchor;
+
+                    // Create the area label placeholder using Leaflet's L.divIcon
+                    const areaLabelPlaceholder = L.divIcon({
+                        className: 'area_number_label',  // Define className to allow CSS styling
+                        html: `<span>${areaLabel}</span>`,  // Display the area label inside the span
+                        iconSize: defaultAreaLabelIconSize,  // Set the icon size
+                        iconAnchor: areaLabelAnchor  // Set the icon anchor
+                    });
+
+                     // Add the area label placeholder to the map
+                    const areaLabelMarker = L.marker(areaPolygon.getBounds().getNorthEast(), { icon: areaLabelPlaceholder }).addTo(map);
+                    areaLabelList[areaName] = areaLabelMarker;  // Place the area number marker
+
+                    // -------------------------------------------- //
+                    // Adding the area points value to the area
+                    // -------------------------------------------- //
+
+                    // Define custom iconAnchors for points value labels which are not correctly place by the default iconAnchor
+                    const customPointsValueLabel = {
+                        'Binnenstad Noord': [30, -20],
+                        'Binnenstad West': [5, -20],
+                        'Binnenstad Zuid': [2, 20],
+                        'Binnenstad Oost': [10, 5],
+                        'Brinkhorst Zuid': [20, -10],
+                        'Brummelhof Noord': [30, -15],
+                        'Brummelhof Oost': [30, 35],
+                        'Brummelhof Zuid': [40, -10],
+                        'De Haven': [15, -25],
+                        'De Parken Noord': [35, 5],
+                        'De Parken Oost': [5, 32],
+                        'De Parken Zuid': [30, 25],
+                        'Sprengenweg Noord': [35, 0],
+                        'Sluisoord': [20, 40],
+                        'Station': [0, 10]
+                    };
+
+                    // Set pointsValueIconAnchor to the defaultPointsValueIconAnchor unless it is in customPointsValueLabel
+                    const pointsValueIconAnchor = customPointsValueLabel[areaName] || defaultPointsValueIconAnchor;
+
+                    // Create the area points value placeholder using Leaflet's L.divIcon
+                    const pointsLabel = L.divIcon({
+                        className: 'area_points_label',  // Define className to allow CSS styling
+                        html: `<span>${areaPoints[areaName]}</span>`,  // Display the points value label inside the span
+                        iconSize: defaultPointsValueIconSize,  // Set the icon size
+                        iconAnchor: pointsValueIconAnchor // Set the icon anchor
+                    });
+
+                    const center = areaPolygon.getBounds().getCenter();  // Get the center of the area polygon
+
+                     // Add the points value label placeholder to the map
+                    const pointsValueMarker = L.marker(center, { icon: pointsLabel }).addTo(map);
+                    pointsValueMarker.options.interactive = false;  // Ensure that the screen does not jump to the left when clicking the points value label in its large size
+                    areaPointsValueList[areaName] = pointsValueMarker;  // Place the points value marker
+
+                    let originalPlayerFillColor = fillColorNotClaimed;  // Default fill color for unclaimed areas
+                    let originalPlayer = null;  // Initialise originalPlayer as if the area is unclaimed. Needer for updating the scores
+                    let clickCount = 0;  // Variable to keep track of the number of consecutive clicks in a single area
+
+                    // ---------------------------------------------------------------------------------------- //
+                    // Mouse functionality: Hovering over an area, clicking an area, leaving an area
+                    // ---------------------------------------------------------------------------------------- //  
+
+                    // Function to switch the oldScores to scores or vice versa
+                    const switchScoreTracking = (saveScoresAsOldScores, selectedPlayer, originalPlayer, scores, oldScores, claimedAreas, oldClaimedAreas) => {
+                        if (saveScoresAsOldScores === true) { //  Save the current scores as the old scores
+                            oldScores[selectedPlayer] = scores[selectedPlayer];
+                            oldClaimedAreas[selectedPlayer] = claimedAreas[selectedPlayer];
+
+                            oldScores[originalPlayer] = scores[originalPlayer];
+                            oldClaimedAreas[originalPlayer] = claimedAreas[originalPlayer];
+                        }
+
+                        else if (saveScoresAsOldScores === false) { //  Save the old scores as the current scores
+                            scores[selectedPlayer] = oldScores[selectedPlayer];
+                            claimedAreas[selectedPlayer] = oldClaimedAreas[selectedPlayer];
+
+                            scores[originalPlayer] = oldScores[originalPlayer];
+                            claimedAreas[originalPlayer] = oldClaimedAreas[originalPlayer];
+                        }
+                    };
+
+                    // Function that is called when the player hovers their mouse over the area                 
+                    areaPolygon.on('mouseover', function() {
+                        clickCount = 0;  // Set click count to 0 when entering an area
+
+                        const currentAreaPointsValue = areaPoints[areaName];  // Extract the current points value of the area
+                        const AreaPreviousPoints = areaPointsPrevious[areaName];  // Extract the previous points value of the area
+
+                        switchScoreTracking(saveScoresAsOldScores=true, selectedPlayer, originalPlayer, scores, oldScores, claimedAreas, oldClaimedAreas)  // Update the old score to the current score
+
+                        // If the selected player is not the original player -> deduct the correct amount of points and deduct 1 area claimed from the original player. Otherwise do nothing
+                        scores[originalPlayer] -= (selectedPlayer !== originalPlayer) ? AreaPreviousPoints : 0;
+                        claimedAreas[originalPlayer] -= (selectedPlayer !== originalPlayer) ? 1 : 0;
+
+                        // If the selected player is not the original player -> add currentAreaPointsValue and add 1 area claimed from the selected player
+                        // If the selected player is the original player -> deduct AreaPreviousPoints and 1 area claimed from the selected player
+                        scores[selectedPlayer] += (selectedPlayer !== originalPlayer) ? currentAreaPointsValue : -AreaPreviousPoints;
+                        claimedAreas[selectedPlayer] += (selectedPlayer !== originalPlayer) ? 1 : -1;
+
+                        //  Temporarily update the scoreboard with the change in points between 
+                        updateScoreboard(scores, claimedAreas, selectedPlayer, originalPlayer, styleIsTemporary=true, oldScores[selectedPlayer], oldScores[originalPlayer], oldClaimedAreas[selectedPlayer], oldClaimedAreas[originalPlayer]);
+
+                        this.setStyle({ fillColor: selectedPlayerFillColor, fillOpacity: opacityHovering });  // Set area style when hovering. Color of selected player with low opacity
+                    });
+
+                    // Function that is called when the player clicks on the area
+                    areaPolygon.on('click', function () {
+                        clickCount += 1;  // Update the click count by 1 (1 click)
+
+                        const currentAreaPointsValue = areaPoints[areaName];  // Extract the current points value of the area
+                        areaPointsPrevious[areaName] = currentAreaPointsValue;  // Save the number of points value of the area
+
+                        // Automatically update the points value of the area
+                        if (selectedPlayer !== originalPlayer && areaPoints[areaName] > 1) {  
+                            areaPoints[areaName]--;  // Deduct a point from the area's points value
+                        }
+
+                        // Update the dropdown menu in the area points value selection menu to reflect the new points value
+                        dropdown.value = areaPoints[areaName].toString();
+
+                        updatePointsValueLabel(areaPoints, areaPointsPrevious, areaName);  // Update the area points value
+
+                        // Assign newFillOpacity and newFillColor based on the original state before setting originalPlayer to null
+                        newFillOpacity = (originalPlayer == selectedPlayer) ? opacityNotClaimed : opacityClaimed;
+                        newFillColor = (originalPlayer == selectedPlayer) ? fillColorNotClaimed : selectedPlayerFillColor;
+
+                        this.setStyle({ fillColor: newFillColor, fillOpacity: newFillOpacity });  // Apply the style to the area
+
+                        updateScoreboard(scores, claimedAreas, selectedPlayer, originalPlayer, styleIsTemporary=false)  // Update the scoreboard
+
+                        switchScoreTracking(saveScoresAsOldScores=true, selectedPlayer, originalPlayer, scores, oldScores, claimedAreas, oldClaimedAreas)  // Update the old score to the current score
+
+                        originalPlayer = (newFillColor !== fillColorNotClaimed) ? selectedPlayer : null  // Update the original player. It the area is claimed originalPlayer = selectedPlayer. Otherwise null
+                        originalPlayerFillColor = newFillColor;  // Update the fill color of the new original player
+
+                        // Functionality to ensure the correct score and claimed areas if the user does multiple clicks in an area without leaving the area. These score updates are only applied if the user clicks again
+                        // If the number of clicks is even, subtract the number of points the area is worth and subtract 1 for claimed ares. Otherwise, add the number of points the area is worth and subtract 1 for claimed areas
+                        scores[selectedPlayer] += (clickCount % 2 == 1) ? -currentAreaPointsValue : currentAreaPointsValue;
+                        claimedAreas[selectedPlayer] += (clickCount % 2 == 1) ? -1 : 1;
+                    });
+
+                    // Function that is called when the players mouse leaves an area (ensures that the area's style stays the same after clicking)
+                    areaPolygon.on('mouseout', function () {
+                        updateScoreboard(oldScores, oldClaimedAreas, selectedPlayer, originalPlayer, styleIsTemporary=false)  // Update the scoreboard (only visually changes the scoreboard if the user did not click the area)
+
+                        switchScoreTracking(saveScoresAsOldScores=false, selectedPlayer, originalPlayer, scores, oldScores, claimedAreas, oldClaimedAreas)  // Update the current score to the old score
+
+                        // appliedOpacity is opacityNotClaimed if the fill color is lightgrey when entering this function. appliedOpacity is opacityClaimed if the area has been clicked
+                        let appliedOpacity = (originalPlayerFillColor === fillColorNotClaimed) ? opacityNotClaimed : opacityClaimed;
+                        this.setStyle({ fillColor: originalPlayerFillColor, fillOpacity: appliedOpacity }); 
+                    });
+
+                });
+
+            } catch (error) {  // Catch error if there has been an issue with the JSON file
+                console.error('Error loading the JSON file:', error);
+            }
+        }
+
+        // Function that updates the points value label
+        function updatePointsValueLabel(areaPoints, areaPointsPrevious, areaName, manuallyChangedAreaPointsValue=false) {
+            if (areaPointsValueList[areaName]) {
+                const points = areaPoints[areaName]  // Current points value of the area
+                const previousPoints = areaPointsPrevious[areaName]  // Points value of the area before being clicked
+
+                // const wasUnclaimed = previousPoints === null;  // Variable that checks if an area was unclaimed before being clicked
+                const noPointsValueChange = points === previousPoints;  // Variable that checks if the points value has changed
+                const isUnclaimed = !(areaName in areaPointsPrevious);
+                // Define the iconAnchors for the areas, removing duplicate information
+                const customPointsValueIconAnchor = {
+                    'Binnenstad Noord': [30, -20],
+                    'Binnenstad West': [5, -20],
+                    'Binnenstad Zuid': [2, 20],
+                    'Binnenstad Oost': [10, 5],
+                    'Brinkhorst Zuid': [20, -10],
+                    'Brummelhof Noord': [30, -15],
+                    'Brummelhof Oost': [30, 35],
+                    'Brummelhof Zuid': [40, -10],
+                    'De Haven': [15, -25],
+                    'De Parken Noord': [35, 5],
+                    'De Parken Oost': [5, 32],
+                    'De Parken Zuid': [30, 25],
+                    'Sprengenweg Noord': [35, 0],
+                    'Sluisoord': [20, 40],
+                    'Station': [0, 10]
+                };
+
+                // Set iconApointsValueIconAnchornchor based on if it has and modified Icon Anchor
+                if (customPointsValueIconAnchor[areaName]) {  // If a custom Icon Anchor has been set
+                    finalChangeInIconAnchor = manuallyChangedAreaPointsValue ? 0 : changeInIconAnchor
+
+                    pointsValueIconAnchor = noPointsValueChange  // If no points value change
+                        ? customPointsValueIconAnchor[areaName]  // Set the custom points value Icon Anchor
+                        // Otherwise move the Icon Anchor 8 to the modified position
+                        : [customPointsValueIconAnchor[areaName][0] + finalChangeInIconAnchor, customPointsValueIconAnchor[areaName][1]];
+                } else if (isUnclaimed) {  // If the area is unclaimed
+                    pointsValueIconAnchor = defaultPointsValueIconAnchor  // Icon Anchor is default Icon Anchor
+                } else {  // No modified Icon Anchor
+                    // If no points value change -> Default Icon Anchor. Otherwise the extended Icon Anchor
+                    pointsValueIconAnchor = noPointsValueChange ? defaultPointsValueIconAnchor : changedPointsValueIconAnchor;
+                }
+
+                // Set iconSize
+                pointsValueIconSize = isUnclaimed ? defaultPointsValueIconSize :  // If the area is unclaimed -> default icon size (no extended label necessary)
+                                      (noPointsValueChange ? defaultPointsValueIconSize : changedPointsValueIconSize);  // If no points value change -> default icon size. Otherwise, changed icon size
+
+                // Determine the text in the points value label based on if the points value was changed or not
+                pointsValueLabelText = isUnclaimed ? `${points}` :  // If the area is unclaimed -> only display points value
+                                       (noPointsValueChange ? `${points}` : `${points} (${previousPoints})`);  // If no points value change -> points. Otherwise, points (previousPoints)
+
+                // Update the area points value placeholder
+                areaPointsValueList[areaName].setIcon(L.divIcon({
+                    className: 'area_points_label',  // Refer to the correct class
+                    html: `<span>${pointsValueLabelText}</span>`,
+                    iconSize: pointsValueIconSize,  // Set Icon Size
+                    iconAnchor: pointsValueIconAnchor  // Set Icon Anchor
+                }));
+            }
+        }
+
+        loadGeoData();
+
+        // Add functionality to points value label toggle
+        let areaLabelsVisible = false;  // Variable to keep track of the visibility state of the area labels
+        let pointsValueVisible = false;  // Variable to keep track of the visibility state of point value labels
+        let locationsVisible = false;  // Variable to keep track of the visibility state of the location markers
+
+        // Function that handles toggle the visiblity of map elements
+        function toggleVisibility(buttonID, elementList, visiblityLabel) {
+            document.getElementById(buttonID).addEventListener("click", () => {  // Upon clicking
+                visiblityLabel = !visiblityLabel;  // Toggle location marker visiblity
+
+                // Show or hide the area labels based on the state
+                Object.keys(elementList).forEach(areaName => {  // For every area
+                    const locationMarkerVisible = elementList[areaName];
+
+                    if (visiblityLabel) {
+                        locationMarkerVisible.getElement().style.display = '';  // Show location marker label
+                    } else {
+                        locationMarkerVisible.getElement().style.display = 'none';  // Hide location marker label
+                    }
+                });
+            });
+        }
+
+        toggleVisibility("toggleAreaLabelButton", areaLabelList, areaLabelsVisible);  // Toggle visibility of the area number labels
+        toggleVisibility("togglePointsValueButton", areaPointsValueList, pointsValueVisible);  // Toggle visibility of the area point value labels
+        toggleVisibility("toggleLocationMarkerButton", areaLocationMarkerlist, locationsVisible);  // Toggle visibility of the location markers
+    </script>
+    
+</body>
+</html>
