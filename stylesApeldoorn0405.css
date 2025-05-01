@@ -220,9 +220,16 @@ Player Select Menu Styles
 input[type="radio"] {
     margin-right: 10px;
     position: relative;
-    top: -3px;
+    top: -5px;
     cursor: pointer;
 }
+
+/* Player select checkbox */
+.player-tag {
+    position: relative;
+    top: -3px;
+    cursor: pointer;
+  }
 
 /* ------------------------------
 Area Points Value Selection Menu Styles

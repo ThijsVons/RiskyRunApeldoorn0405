@@ -29,6 +29,14 @@ gebieden_data = gebieden_df.iloc[:, 1:].values.astype(int)
 # punten_gebieden_ratio_data = punten_data/gebieden_data
 punten_gebieden_ratio_data = np.divide(punten_data, gebieden_data, out=np.full_like(punten_data, np.nan, dtype=float), where=gebieden_data != 0) # Deel aantal punten door aantal gebieden. NaN als gebieden 0 is
 
+def set_time_axis_gap(total_time):
+    if total_time <= 15:
+        return 1
+    elif total_time <= 60:
+        return 5
+    else:
+        return 15
+
 # Tikker periodes correct interpreteren
 def extract_tikker_periods(tikker_df):
     periods = {player: [] for player in players}
@@ -51,10 +59,10 @@ def assign_colors(players):
     return {player: colors[i % len(colors)] for i, player in enumerate(players)}
 colors = assign_colors(players)
 
-# Tijdsbereik aanpassen
-start_time = 12 * 60 + 15  # 12:15 in minuten
-end_time = 16 * 60 + 30  # 16:30 in minuten
-time_minutes = [t for t in time_minutes if start_time <= t <= end_time]
+# Tijdsbereik handmatig aanpassen
+# start_time = 12 * 60 + 15  # 12:15 in minuten
+# end_time = 16 * 60 + 30  # 16:30 in minuten
+# time_minutes = [t for t in time_minutes if start_time <= t <= end_time]
 
 # Plot functie
 def plot_data(time_minutes, data, periods_dict, title, ylabel):
@@ -76,8 +84,8 @@ def plot_data(time_minutes, data, periods_dict, title, ylabel):
         ax.set_ylim(1.8,4.2)
     
     # X-as labels naar hh:mm formaat en verticale gridlijnen elke 10 minuten
-    time_labels = [f"{t//60:02d}:{t%60:02d}" for t in range(start_time, end_time + 1, 15)]
-    time_ticks = list(range(start_time, end_time + 1, 15))
+    time_labels = [f"{t//60:02d}:{t%60:02d}" for t in range(time_minutes[0], time_minutes[-1] + 1, set_time_axis_gap(time_minutes[-1] - time_minutes[0]))]
+    time_ticks = list(range(time_minutes[0], time_minutes[-1] + 1, set_time_axis_gap(time_minutes[-1] - time_minutes[0])))
     plt.xticks(time_ticks, time_labels, rotation=45)
     plt.grid(axis='x', linestyle='--', alpha=0.5)
 
