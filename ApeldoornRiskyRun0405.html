@@ -23,7 +23,7 @@
             <table> <!-- Table containing the players in the game, their points and the number of areas they claimed -->
                 <thead> <!-- Scoreboard table header -->
                     <tr>
-                        <th><strong>Speler</strong></th> <!-- Players header -->
+                        <th><strong>Team</strong></th> <!-- Players header -->
                         <th><strong>Punten</strong></th> <!-- Points header -->
                         <th><strong>Gebieden</strong></th> <!-- Claimed areas header -->
                     </tr>
@@ -303,12 +303,14 @@
         const scores = { name1: 0, name2: 0, name3: 0, name4: 0};  // Initialise the starting scores of each player at 0
         const claimedAreas = { name1: 0, name2: 0, name3: 0, name4: 0};  // Initialise the claimed areas of each player at 0
 
-        const oldScores = { name1: 0, name2: 0, name3: 0, name4: 0}; 
-        const oldClaimedAreas = { name1: 0, name2: 0, name3: 0, name4: 0}; 
+        const oldScores = { name1: 0, name2: 0, name3: 0, name4: 0};  // List to keep track of the old score
+        const oldClaimedAreas = { name1: 0, name2: 0, name3: 0, name4: 0};  // List to keep track of the old areas claimed
 
-        const scoreHistory = []; // To track scores
-        const areaHistory = [] // To track areas
-        const timeHistory = []; // To track timestamps
+        const scoreHistory = [];  // 2D array to track scores
+        const areaHistory = []  // 2D array to track areas
+        const timeHistory = [];  // List to track timestamps
+
+        let lastClickedPolygon = null;  // No polygon has been clicked yet
 
         // Lists to update the style of the score when hovering over an area
         const scoreElements = ['score_player_1', 'score_player_2', 'score_player_3', 'score_player_4'];
@@ -433,7 +435,6 @@
 
                     const areaCoordinates = area.geometry.rings || area.geometry.coordinates;  // Extract area polygon geometry
                     const transformedCoords = areaCoordinates[0].map(coord => proj4("EPSG:28992", "EPSG:4326", [coord[0] - 35, coord[1] - 113]).reverse());  // Transform CRS from RD NEW to WGS84
-                    // const transformedCoords = areaCoordinates[0].map(coord => proj4("EPSG:28992", "EPSG:4326", [coord[0] - 1000, coord[1] - 1000]).reverse());  // Transform CRS from RD NEW to WGS84
 
                     const latlng = L.latLng(challengeLocationY, challengeLocationX);
                     const areaLocationMarker = L.marker(latlng, {
@@ -624,6 +625,12 @@
                         const currentAreaPointsValue = areaPoints[areaName];  // Extract the current points value of the area
                         areaPointsPrevious[areaName] = currentAreaPointsValue;  // Save the number of points value of the area
 
+                        if (lastClickedPolygon) { 
+                            lastClickedPolygon.setStyle({ fillColor: newFillColor, fillOpacity: newFillOpacity, weight: 1});
+                        }
+                        
+                        lastClickedPolygon = areaPolygon;
+
                         // Automatically update the points value of the area
                         if (selectedPlayer !== originalPlayer && areaPoints[areaName] > 1) {  
                             areaPoints[areaName]--;  // Deduct a point from the area's points value
@@ -638,9 +645,9 @@
                         newFillOpacity = (originalPlayer == selectedPlayer) ? opacityNotClaimed : opacityClaimed;
                         newFillColor = (originalPlayer == selectedPlayer) ? fillColorNotClaimed : selectedPlayerFillColor;
 
-                        this.setStyle({ fillColor: newFillColor, fillOpacity: newFillOpacity });  // Apply the style to the area
+                        areaPolygon.setStyle({ fillColor: newFillColor, fillOpacity: newFillOpacity, weight: 3});  // Apply the style to the area
 
-                        saveScoreSnapshot();
+                        saveScoreSnapshot();  // Save the new scores and new areas claimed
 
                         updateScoreboard(scores, claimedAreas, selectedPlayer, originalPlayer, styleIsTemporary=false)  // Update the scoreboard
 
