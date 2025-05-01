@@ -8,13 +8,7 @@
         "Shape_Length": "Shape_Length",
         "Shape_Area": "Shape_Area",
         "ChallengeLocatieX": "ChallengeLocatieX",
-        "Gebied_Naam": "Gebied Naam",
-        "gebiednummer_1": "gebiednummer",
-        "Locatie": "Locatie",
-        "Coordinaat": "Coordinaat",
-        "Coordinaat_X": "Coordinaat_X",
-        "ChallengeLocatieY": "ChallengeLocatieY",
-        "Beschrijving": "Beschrijving"
+        "ChallengeLocatieY": "ChallengeLocatieY"
     },
     "geometryType": "esriGeometryPolygon",
     "spatialReference": {
@@ -59,43 +53,9 @@
             "alias": "ChallengeLocatieX"
         },
         {
-            "name": "Gebied_Naam",
-            "type": "esriFieldTypeString",
-            "alias": "Gebied Naam",
-            "length": 8000
-        },
-        {
-            "name": "gebiednummer_1",
-            "type": "esriFieldTypeInteger",
-            "alias": "gebiednummer"
-        },
-        {
-            "name": "Locatie",
-            "type": "esriFieldTypeString",
-            "alias": "Locatie",
-            "length": 8000
-        },
-        {
-            "name": "Coordinaat",
-            "type": "esriFieldTypeString",
-            "alias": "Coordinaat",
-            "length": 8000
-        },
-        {
-            "name": "Coordinaat_X",
-            "type": "esriFieldTypeDouble",
-            "alias": "Coordinaat_X"
-        },
-        {
             "name": "ChallengeLocatieY",
             "type": "esriFieldTypeDouble",
             "alias": "ChallengeLocatieY"
-        },
-        {
-            "name": "Beschrijving",
-            "type": "esriFieldTypeString",
-            "alias": "Beschrijving",
-            "length": 8000
         }
     ],
     "features": [
@@ -108,13 +68,7 @@
                 "Shape_Length": 1897.7796722769069,
                 "Shape_Area": 187308.06431613551,
                 "ChallengeLocatieX": 5.958202,
-                "Gebied_Naam": "Binnenstad Noord",
-                "gebiednummer_1": 15,
-                "Locatie": "Caterplein",
-                "Coordinaat": "52.216533, 5.958202",
-                "Coordinaat_X": 5.958202,
-                "ChallengeLocatieY": 52.216532999999998,
-                "Beschrijving": "Drankje op terras"
+                "ChallengeLocatieY": 52.216532999999998
             },
             "geometry": {
                 "rings": [
@@ -568,13 +522,7 @@
                 "Shape_Length": 1594.3682549643017,
                 "Shape_Area": 138524.02843345134,
                 "ChallengeLocatieX": 5.9635569999999998,
-                "Gebied_Naam": "Binnenstad Oost",
-                "gebiednummer_1": 13,
-                "Locatie": "Marktplein",
-                "Coordinaat": "52.215216, 5.963557",
-                "Coordinaat_X": 5.9635569999999998,
-                "ChallengeLocatieY": 52.215215999999998,
-                "Beschrijving": "Lelijke overkapping"
+                "ChallengeLocatieY": 52.215215999999998
             },
             "geometry": {
                 "rings": [
@@ -720,13 +668,7 @@
                 "Shape_Length": 1885.9397820032718,
                 "Shape_Area": 211315.26506953238,
                 "ChallengeLocatieX": 5.9592039999999997,
-                "Gebied_Naam": "Binnenstad West",
-                "gebiednummer_1": 14,
-                "Locatie": "Nieuw-Apostolische Kerk Apeldoorn",
-                "Coordinaat": "52.211830, 5.959204",
-                "Coordinaat_X": 5.9592039999999997,
-                "ChallengeLocatieY": 52.211829999999999,
-                "Beschrijving": "Feitje voorbijganger"
+                "ChallengeLocatieY": 52.211829999999999
             },
             "geometry": {
                 "rings": [
@@ -988,13 +930,7 @@
                 "Shape_Length": 1292.8578732425594,
                 "Shape_Area": 99227.111156761268,
                 "ChallengeLocatieX": 5.9647449999999997,
-                "Gebied_Naam": "Binnenstad Zuid",
-                "gebiednummer_1": 12,
-                "Locatie": "Begin winkelstraat",
-                "Coordinaat": "52.212491, 5.964745",
-                "Coordinaat_X": 5.9647449999999997,
-                "ChallengeLocatieY": 52.212491,
-                "Beschrijving": "Maccie klappen"
+                "ChallengeLocatieY": 52.212491
             },
             "geometry": {
                 "rings": [
@@ -1132,13 +1068,7 @@
                 "Shape_Length": 2016.1533307881111,
                 "Shape_Area": 252270.07614471091,
                 "ChallengeLocatieX": 5.9523080000000004,
-                "Gebied_Naam": "Brinkhorst Noord",
-                "gebiednummer_1": 3,
-                "Locatie": "Arbeidstraat",
-                "Coordinaat": "52.213136, 5.952308",
-                "Coordinaat_X": 5.9523080000000004,
-                "ChallengeLocatieY": 52.213135999999999,
-                "Beschrijving": "Eten"
+                "ChallengeLocatieY": 52.213135999999999
             },
             "geometry": {
                 "rings": [
@@ -1300,13 +1230,7 @@
                 "Shape_Length": 1873.9013658824615,
                 "Shape_Area": 214799.67322791237,
                 "ChallengeLocatieX": 5.953792,
-                "Gebied_Naam": "Brinkhorst Zuid",
-                "gebiednummer_1": 4,
-                "Locatie": "Ietje Kooistraweg",
-                "Coordinaat": "52.209661, 5.953792",
-                "Coordinaat_X": 5.953792,
-                "ChallengeLocatieY": 52.209660999999997,
-                "Beschrijving": "Klimrek"
+                "ChallengeLocatieY": 52.209660999999997
             },
             "geometry": {
                 "rings": [
@@ -1508,13 +1432,7 @@
                 "Shape_Length": 2208.2824781855502,
                 "Shape_Area": 270237.17276256235,
                 "ChallengeLocatieX": 5.9621940000000002,
-                "Gebied_Naam": "Brummelhof Noord",
-                "gebiednummer_1": 9,
-                "Locatie": "Tenderlaan",
-                "Coordinaat": "52.207350, 5.962194",
-                "Coordinaat_X": 5.9621940000000002,
-                "ChallengeLocatieY": 52.207349999999998,
-                "Beschrijving": "Gedicht"
+                "ChallengeLocatieY": 52.207349999999998
             },
             "geometry": {
                 "rings": [
@@ -1644,13 +1562,7 @@
                 "Shape_Length": 1805.3156712400462,
                 "Shape_Area": 190040.33527916035,
                 "ChallengeLocatieX": 5.9717370000000001,
-                "Gebied_Naam": "Brummelhof Oost",
-                "gebiednummer_1": 8,
-                "Locatie": "IJsselgroep",
-                "Coordinaat": "52.205553, 5.971737",
-                "Coordinaat_X": 5.9717370000000001,
-                "ChallengeLocatieY": 52.205553000000002,
-                "Beschrijving": "Vogel"
+                "ChallengeLocatieY": 52.205553000000002
             },
             "geometry": {
                 "rings": [
@@ -1771,14 +1683,8 @@
                 "ORIG_FID": 21,
                 "Shape_Length": 2733.0911293688819,
                 "Shape_Area": 343386.63882595807,
-                "ChallengeLocatieX": 5.964226,
-                "Gebied_Naam": "Brummelhof Zuid",
-                "gebiednummer_1": 7,
-                "Locatie": "Flip Kluin",
-                "Coordinaat": "52.202680, 5.964226",
-                "Coordinaat_X": 5.964226,
-                "ChallengeLocatieY": 52.202680000000001,
-                "Beschrijving": "Fotos van dieren"
+                "ChallengeLocatieX": 5.9645130000000002,
+                "ChallengeLocatieY": 52.203600000000002
             },
             "geometry": {
                 "rings": [
@@ -1944,13 +1850,7 @@
                 "Shape_Length": 2308.1248201985636,
                 "Shape_Area": 194253.44046782525,
                 "ChallengeLocatieX": 5.9688400000000001,
-                "Gebied_Naam": "De Haven",
-                "gebiednummer_1": 11,
-                "Locatie": "Het Potlood",
-                "Coordinaat": "52.214219, 5.968840",
-                "Coordinaat_X": 5.9688400000000001,
-                "ChallengeLocatieY": 52.214219,
-                "Beschrijving": "Tekenen"
+                "ChallengeLocatieY": 52.214219
             },
             "geometry": {
                 "rings": [
@@ -2195,14 +2095,8 @@
                 "ORIG_FID": 12,
                 "Shape_Length": 2400.9455831722535,
                 "Shape_Area": 326613.53495815187,
-                "ChallengeLocatieX": 5.9540119999999996,
-                "Gebied_Naam": "De Heeze",
-                "gebiednummer_1": 6,
-                "Locatie": "De Hofstede",
-                "Coordinaat": "52.201851, 5.954012",
-                "Coordinaat_X": 5.9540119999999996,
-                "ChallengeLocatieY": 52.201850999999998,
-                "Beschrijving": "Mark praktijken"
+                "ChallengeLocatieX": 5.9546159999999997,
+                "ChallengeLocatieY": 52.200153
             },
             "geometry": {
                 "rings": [
@@ -2311,14 +2205,8 @@
                 "ORIG_FID": 114,
                 "Shape_Length": 1943.2061010990385,
                 "Shape_Area": 163537.2977871309,
-                "ChallengeLocatieX": 5.9598050000000002,
-                "Gebied_Naam": "De Parken Noord",
-                "gebiednummer_1": 18,
-                "Locatie": "Louisalaan",
-                "Coordinaat": "52.222517, 5.959805",
-                "Coordinaat_X": 5.9598050000000002,
-                "ChallengeLocatieY": 52.222517000000003,
-                "Beschrijving": "Douwe"
+                "ChallengeLocatieX": 5.9613420000000001,
+                "ChallengeLocatieY": 52.224322999999998
             },
             "geometry": {
                 "rings": [
@@ -2432,13 +2320,7 @@
                 "Shape_Length": 1667.6902643973608,
                 "Shape_Area": 128972.32861948649,
                 "ChallengeLocatieX": 5.963997,
-                "Gebied_Naam": "De Parken Oost",
-                "gebiednummer_1": 17,
-                "Locatie": "Wilhelminapark",
-                "Coordinaat": "52.221880, 5.963997",
-                "Coordinaat_X": 5.963997,
-                "ChallengeLocatieY": 52.221879999999999,
-                "Beschrijving": "Parkje"
+                "ChallengeLocatieY": 52.221879999999999
             },
             "geometry": {
                 "rings": [
@@ -2540,13 +2422,7 @@
                 "Shape_Length": 2065.5620488694126,
                 "Shape_Area": 211678.76467997424,
                 "ChallengeLocatieX": 5.9611210000000003,
-                "Gebied_Naam": "De Parken Zuid",
-                "gebiednummer_1": 16,
-                "Locatie": "Oranjepark",
-                "Coordinaat": "52.218826, 5.961121",
-                "Coordinaat_X": 5.9611210000000003,
-                "ChallengeLocatieY": 52.218826,
-                "Beschrijving": "Park praktijken"
+                "ChallengeLocatieY": 52.218826
             },
             "geometry": {
                 "rings": [
@@ -2667,14 +2543,8 @@
                 "ORIG_FID": 98,
                 "Shape_Length": 3192.3540862496134,
                 "Shape_Area": 382408.89008611121,
-                "ChallengeLocatieX": 5.9312269999999998,
-                "Gebied_Naam": "Driehuizen",
-                "gebiednummer_1": 1,
-                "Locatie": "Asselsestraat",
-                "Coordinaat": "52.207436, 5.931227",
-                "Coordinaat_X": 5.9312269999999998,
-                "ChallengeLocatieY": 52.207436000000001,
-                "Beschrijving": "Imre Osso"
+                "ChallengeLocatieX": 5.9352229999999997,
+                "ChallengeLocatieY": 52.209215
             },
             "geometry": {
                 "rings": [
@@ -2776,13 +2646,7 @@
                 "Shape_Length": 2110.0987263111374,
                 "Shape_Area": 215912.91112064826,
                 "ChallengeLocatieX": 5.952337,
-                "Gebied_Naam": "Holthuizen",
-                "gebiednummer_1": 5,
-                "Locatie": "Spoor",
-                "Coordinaat": "52.204802, 5.952337",
-                "Coordinaat_X": 5.952337,
-                "ChallengeLocatieY": 52.204802000000001,
-                "Beschrijving": "Samen fietsen"
+                "ChallengeLocatieY": 52.204802000000001
             },
             "geometry": {
                 "rings": [
@@ -2844,13 +2708,7 @@
                 "Shape_Length": 2950.1606643286214,
                 "Shape_Area": 456972.95341939828,
                 "ChallengeLocatieX": 5.9521860000000002,
-                "Gebied_Naam": "Loolaan-Noord",
-                "gebiednummer_1": 19,
-                "Locatie": "Korteweg x Langeweg",
-                "Coordinaat": "52.227745, 5.952186",
-                "Coordinaat_X": 5.9521860000000002,
-                "ChallengeLocatieY": 52.227744999999999,
-                "Beschrijving": "Random plek in de wijk"
+                "ChallengeLocatieY": 52.227744999999999
             },
             "geometry": {
                 "rings": [
@@ -2936,13 +2794,7 @@
                 "Shape_Length": 2326.1726128720311,
                 "Shape_Area": 346120.49004971742,
                 "ChallengeLocatieX": 5.9856769999999999,
-                "Gebied_Naam": "Matendreef",
-                "gebiednummer_1": 22,
-                "Locatie": "De Korf",
-                "Coordinaat": "52.202592, 5.985677",
-                "Coordinaat_X": 5.9856769999999999,
-                "ChallengeLocatieY": 52.202592000000003,
-                "Beschrijving": "Doe een beroep van een straatnaam na"
+                "ChallengeLocatieY": 52.202592000000003
             },
             "geometry": {
                 "rings": [
@@ -3004,13 +2856,7 @@
                 "Shape_Length": 2666.1192865123949,
                 "Shape_Area": 414056.56761388795,
                 "ChallengeLocatieX": 5.9862409999999997,
-                "Gebied_Naam": "Sluisoord",
-                "gebiednummer_1": 21,
-                "Locatie": "Mheenpark",
-                "Coordinaat": "52.222755, 5.986241",
-                "Coordinaat_X": 5.9862409999999997,
-                "ChallengeLocatieY": 52.222754999999999,
-                "Beschrijving": "Klassenfoto"
+                "ChallengeLocatieY": 52.222754999999999
             },
             "geometry": {
                 "rings": [
@@ -3119,14 +2965,8 @@
                 "ORIG_FID": 4,
                 "Shape_Length": 2141.3799396492773,
                 "Shape_Area": 254254.71083999064,
-                "ChallengeLocatieX": 5.9499760000000004,
-                "Gebied_Naam": "Sprengenweg Noord",
-                "gebiednummer_1": 2,
-                "Locatie": "Badhuisweg",
-                "Coordinaat": "52.218157, 5.949976",
-                "Coordinaat_X": 5.9499760000000004,
-                "ChallengeLocatieY": 52.218156999999998,
-                "Beschrijving": "Mitchlijer osso"
+                "ChallengeLocatieX": 5.9483240000000004,
+                "ChallengeLocatieY": 52.220283000000002
             },
             "geometry": {
                 "rings": [
@@ -3556,13 +3396,7 @@
                 "Shape_Length": 2243.5962348394833,
                 "Shape_Area": 262809.47581807041,
                 "ChallengeLocatieX": 5.9689699999999997,
-                "Gebied_Naam": "Station",
-                "gebiednummer_1": 10,
-                "Locatie": "Station",
-                "Coordinaat": "52.209283, 5.968970",
-                "Coordinaat_X": 5.9689699999999997,
-                "ChallengeLocatieY": 52.209282999999999,
-                "Beschrijving": "Treintje klappen"
+                "ChallengeLocatieY": 52.209282999999999
             },
             "geometry": {
                 "rings": [
@@ -3676,13 +3510,7 @@
                 "Shape_Length": 2053.2221314655135,
                 "Shape_Area": 191383.31041453808,
                 "ChallengeLocatieX": 5.9715600000000002,
-                "Gebied_Naam": "Vlijtseweg",
-                "gebiednummer_1": 20,
-                "Locatie": "Vlijtsekade",
-                "Coordinaat": "52.218741, 5.971560",
-                "Coordinaat_X": 5.9715600000000002,
-                "ChallengeLocatieY": 52.218741000000001,
-                "Beschrijving": "Water?"
+                "ChallengeLocatieY": 52.218741000000001
             },
             "geometry": {
                 "rings": [

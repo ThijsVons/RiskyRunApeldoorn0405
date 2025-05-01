@@ -311,6 +311,8 @@
         const timeHistory = [];  // List to track timestamps
 
         let lastClickedPolygon = null;  // No polygon has been clicked yet
+        const weightPolygon = 1;  // Default weight of polygon outline
+        const weightClaimedRecently = 3;  // Weight of polygon if it is the most recently claimed area
 
         // Lists to update the style of the score when hovering over an area
         const scoreElements = ['score_player_1', 'score_player_2', 'score_player_3', 'score_player_4'];
@@ -496,18 +498,20 @@
 
                     // Define custom iconAnchors for area labels which are not correctly place by the default iconAnchor
                     const customAreaLabelAnchorList = {
-                        2: [60, -30],
-                        3: [60, -25],
-                        4: [100, -50],
-                        8: [90, -60],
+                        2: [70, -30],
+                        3: [70, -25],
+                        4: [105, -50],
+                        5: [70, -75],
+                        8: [92, -83],
                         9: [60, -40],
                         11: [130, -25],
                         12: [70, -50],
                         13: [80, -30],
                         14: [95, -30],
-                        17: [60, -50],
-                        18: [80, -30],
-                        20: [60, -30]
+                        17: [60, -60],
+                        18: [90, -30],
+                        20: [60, -30],
+                        21: [100, -100]
                     };
 
                     // Set areaLabelAnchor to the defaultAreaLabelAnchor unless it is in customAreaLabelAnchorList
@@ -541,10 +545,12 @@
                         'Brummelhof Oost': [30, 35],
                         'Brummelhof Zuid': [40, -10],
                         'De Haven': [15, -25],
+                        'De Heeze': [30, -10],
                         'De Parken Noord': [35, 5],
                         'De Parken Oost': [5, 32],
                         'De Parken Zuid': [30, 25],
-                        'Sprengenweg Noord': [35, 0],
+                        'Holthuizen': [0, 30],
+                        'Sprengenweg Noord': [35, 20],
                         'Sluisoord': [20, 40],
                         'Station': [0, 10]
                     };
@@ -626,7 +632,7 @@
                         areaPointsPrevious[areaName] = currentAreaPointsValue;  // Save the number of points value of the area
 
                         if (lastClickedPolygon) { 
-                            lastClickedPolygon.setStyle({ fillColor: newFillColor, fillOpacity: newFillOpacity, weight: 1});
+                            lastClickedPolygon.setStyle({ fillColor: newFillColor, fillOpacity: newFillOpacity, weight: weightPolygon});
                         }
                         
                         lastClickedPolygon = areaPolygon;
@@ -644,8 +650,9 @@
                         // Assign newFillOpacity and newFillColor based on the original state before setting originalPlayer to null
                         newFillOpacity = (originalPlayer == selectedPlayer) ? opacityNotClaimed : opacityClaimed;
                         newFillColor = (originalPlayer == selectedPlayer) ? fillColorNotClaimed : selectedPlayerFillColor;
+                        newWeight = (originalPlayer == selectedPlayer) ? weightPolygon : weightClaimedRecently;
 
-                        areaPolygon.setStyle({ fillColor: newFillColor, fillOpacity: newFillOpacity, weight: 3});  // Apply the style to the area
+                        areaPolygon.setStyle({ fillColor: newFillColor, fillOpacity: newFillOpacity, weight: newWeight});  // Apply the style to the area
 
                         saveScoreSnapshot();  // Save the new scores and new areas claimed
 
@@ -700,10 +707,12 @@
                     'Brummelhof Oost': [30, 35],
                     'Brummelhof Zuid': [40, -10],
                     'De Haven': [15, -25],
+                    'De Heeze': [30, -10],
                     'De Parken Noord': [35, 5],
                     'De Parken Oost': [5, 32],
                     'De Parken Zuid': [30, 25],
-                    'Sprengenweg Noord': [35, 0],
+                    'Holthuizen': [0, 30],
+                    'Sprengenweg Noord': [35, 20],
                     'Sluisoord': [20, 40],
                     'Station': [0, 10]
                 };
