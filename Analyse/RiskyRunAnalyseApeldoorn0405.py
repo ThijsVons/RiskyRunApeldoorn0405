@@ -68,7 +68,24 @@ colors = assign_colors(players)
 def plot_data(time_minutes, data, periods_dict, title, ylabel):
     fig, ax = plt.subplots(figsize=(20, 8))
     for player, data_point in zip(players, data):
-        ax.plot(time_minutes, data_point, marker="o", ms=10, linewidth=4, label=player, color=colors[player])
+        ax.plot(time_minutes, data_point, linewidth=4, label=player, color=colors[player])
+        
+        # Get indices where the score changes
+        change_indices = set()
+        for i in range(1, len(data_point)):
+            if data_point[i] != data_point[i - 1]:
+                change_indices.add(i)
+                change_indices.add(i - 1)  # Include previous index as well
+        
+        # Sort indices to keep correct order
+        change_indices = sorted(change_indices)
+        
+        # Extract corresponding times and scores
+        change_times = [time_minutes[i] for i in change_indices]
+        change_scores = [data_point[i] for i in change_indices]
+        
+        # Plot markers at those points
+        ax.plot(change_times, change_scores, 'o', ms=10, color=colors[player])
     
     for player, periods in periods_dict.items():
         for start, end in periods:
@@ -77,7 +94,7 @@ def plot_data(time_minutes, data, periods_dict, title, ylabel):
     ax.set_title(title, fontsize=18)
     ax.set_xlabel("Tijd", fontsize=16)
     ax.set_ylabel(ylabel, fontsize=16)
-    ax.legend(title="Spelers", fontsize=14, title_fontsize=16)
+    ax.legend(title="Teams", fontsize=14, title_fontsize=16)
     ax.grid(True, linestyle="--", alpha=0.7)
     
     if ylabel == "Punten/gebieden":
@@ -89,21 +106,21 @@ def plot_data(time_minutes, data, periods_dict, title, ylabel):
     plt.xticks(time_ticks, time_labels, rotation=45)
     plt.grid(axis='x', linestyle='--', alpha=0.5)
 
-    plt.savefig(f"Apeldoorn 19 04 {title}.png", dpi=300, bbox_inches='tight')
+    plt.savefig(f"Risky Run Apeldoorn 4 mei {title}.png", dpi=300, bbox_inches='tight')
     plt.show()
 
 # Plotten van het spelverloop van de punten
-title_punten = "Puntenverloop per speler"
+title_punten = "Puntenverloop per team"
 ylabel_punten = "Punten"
 plot_data(time_minutes, punten_data, tikker_periods, title_punten, ylabel_punten)
 
 # Plotten van het spelverloop van de gebieden
-title_gebieden = "Gebiedenverloop per speler"
+title_gebieden = "Gebiedenverloop per team"
 ylabel_gebieden = "Gebieden"
 plot_data(time_minutes, gebieden_data, tikker_periods, title_gebieden, ylabel_gebieden)
 
 # Plotten van het spelverloop van de punten per gebied
-title_gebieden = "Punten per gebied verloop per speler"
+title_gebieden = "Punten per gebied verloop per team"
 ylabel_gebieden = "Punten/gebieden"
 plot_data(time_minutes, punten_gebieden_ratio_data, tikker_periods, title_gebieden, ylabel_gebieden)
 
