@@ -31,25 +31,25 @@
                 <tbody> <!-- Scoreboard table content -->
                     <tr>
                         <td><span class="player_color_square" id='player_color_square_1' style="background-color: orange;"></span> <!-- Small yellow square before the name of player 1 --> 
-                            Team Mitchell en Damon</td> <!-- Player 1 name -->
+                            Team 1</td> <!-- Player 1 name -->
                         <td><span id="score_player_1">0</span></td> <!-- Score counter player 1 initialisation --> 
                         <td><span id="areas_claimed_player_1">0</span></td> <!-- Claimed areas counter player 1 initialisation --> 
                     </tr>
                     <tr>
                         <td><span class="player_color_square" id='player_color_square_2' style="background-color: yellow;"></span> <!-- Small green square before the name of player 2 --> 
-                            Kimpie Paarntie</td> <!-- Player 2 name -->
+                            Team 2</td> <!-- Player 2 name -->
                         <td><span id="score_player_2">0</span></td> <!-- Score counter player 2 initialisation --> 
                         <td><span id="areas_claimed_player_2">0</span></td> <!-- Claimed areas counter player 2 initialisation --> 
                     </tr>
                     <tr>
                         <td><span class="player_color_square" id='player_color_square_3' style="background-color: blue;"></span> <!-- Small blue square before the name of player 3 --> 
-                            Dual Damage</td> <!-- Player 3 name -->
+                            Team 3</td> <!-- Player 3 name -->
                         <td><span id="score_player_3">0</span></td> <!-- Score counter player 3 initialisation --> 
                         <td><span id="areas_claimed_player_3">0</span></td> <!-- Claimed areas counter player 3 initialisation --> 
                     </tr>
                     <tr>
                         <td><span class="player_color_square" id='player_color_square_4' style="background-color: purple;"></span> <!-- Small red square before the name of player 4 --> 
-                            UltrazalmloversXXL</td> <!-- Player 4 name -->
+                            Team 4</td> <!-- Player 4 name -->
                         <td><span id="score_player_4">0</span></td> <!-- Score counter player 4 initialisation --> 
                         <td><span id="areas_claimed_player_4">0</span></td> <!-- Claimed areas counter player 4 initialisation --> 
                     </tr>
