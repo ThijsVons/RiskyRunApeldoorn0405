@@ -65,25 +65,25 @@
             <label>
                 <input type="radio" name="player" value="name1" checked> <!-- Selection button initialisation. Start off being checked only for player 1 --> 
                 <div class="player_color_square" style="background-color: orange;"></div> <!-- Place small yellow square before the players name --> 
-                Team Mitchell en Damon
+                Team 1
                 <input type="checkbox" class="player-tag" id="player-tag-1">
             </label>
             <label>
                 <input type="radio" name="player" value="name2"> <!-- Selection button initialisation. Start off being unchecked --> 
                 <div class="player_color_square" style="background-color: yellow;"></div> <!-- Place small green square before the players name --> 
-                Kimpie Paarntie
+                Team 2
                 <input type="checkbox" class="player-tag" id="player-tag-2">
             </label>
             <label>
                 <input type="radio" name="player" value="name3"> <!-- Selection button initialisation. Start off being unchecked --> 
                 <div class="player_color_square" style="background-color: blue;"></div> <!-- Place small blue square before the players name --> 
-                Dual Damage
+                Team 3
                 <input type="checkbox" class="player-tag" id="player-tag-3">
             </label>
             <label>
                 <input type="radio" name="player" value="name4"> <!-- Selection button initialisation. Start off being unchecked --> 
                 <div class="player_color_square" style="background-color: purple;"></div> <!-- Place small red square before the players name --> 
-                UltrazalmloversXXL
+                Team 4
                 <input type="checkbox" class="player-tag" id="player-tag-4">
             </label>
         </div>
